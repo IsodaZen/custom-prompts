@@ -32,15 +32,9 @@ A collection of specialized custom commands for Claude Code that streamline soft
 
 | Command | Purpose | Status |
 |---------|---------|--------|
-| `/review:plan` | Implementation plan validation | 🚧 In Development |
 | `/review:security` | Security-focused review | ✅ Available |
 | `/review:after` | Post-implementation diff review | ✅ Available |
 | `/review:perf` | Performance analysis | ✅ Available |
-| `/review:deps` | Dependency and architecture assessment | 🚧 In Development |
-| `/review:debt` | Technical debt analysis | 🚧 In Development |
-| `/review:patterns` | Design pattern evaluation | 🚧 In Development |
-| `/review:pr` | Systematic Pull Request review | 🚧 In Development |
-| `/review:fact` | Information accuracy verification | 🚧 In Development |
 | `/review:prompt` | AI prompt quality evaluation | ✅ Available |
 
 #### `/review:security`
