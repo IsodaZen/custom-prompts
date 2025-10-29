@@ -36,6 +36,7 @@ cp -r /path/to/custom-prompts/commands .claude/
 | `/review:after` | 実装後の差分レビュー | ✅ 利用可能 |
 | `/review:perf` | パフォーマンス分析 | ✅ 利用可能 |
 | `/review:prompt` | AIプロンプト品質評価 | ✅ 利用可能 |
+| `/review:note` | 文書・記事品質レビュー | ✅ 利用可能 |
 
 ### `/review:security`
 
@@ -66,6 +67,14 @@ cp -r /path/to/custom-prompts/commands .claude/
 大規模言語モデル向けプロンプトの品質を評価し改善します。明確性、構造、コンテキスト管理、安全性、保守性をレビューします。
 
 **推奨**: 新規プロンプト作成、プロンプトの効果不足、保守性改善
+
+---
+
+### `/review:note`
+
+文書や記事の読みやすさ、一貫性、明瞭性を評価します。誤解を招く表現、曖昧な記述、AI生成感のある文章パターンを特定することで、読者体験を優先します。単に包括的であるだけでなく、実際に読まれ理解されるコンテンツの作成に焦点を当てます。
+
+**推奨**: ブログ記事、技術記事、ドキュメント、チュートリアル、READMEファイル、リリースノート
 
 ## インストール方法
 
@@ -101,7 +110,8 @@ your-project/
         ├── review:security.md
         ├── review:after.md
         ├── review:perf.md
-        └── review:prompt.md
+        ├── review:prompt.md
+        └── review:note.md
 ```
 
 **注意**: 日本語版（`commands-ja/`）はリポジトリ内で参照用として利用可能ですが、インストールには不要です。
@@ -118,12 +128,14 @@ custom-prompts/
 │   ├── review:security.md
 │   ├── review:after.md
 │   ├── review:perf.md
-│   └── review:prompt.md
+│   ├── review:prompt.md
+│   └── review:note.md
 └── commands-ja/          # 日本語版（参照用）
     ├── review:security.ja.md
     ├── review:after.ja.md
     ├── review:perf.ja.md
-    └── review:prompt.ja.md
+    ├── review:prompt.ja.md
+    └── review:note.ja.md
 ```
 
 ## コントリビューション

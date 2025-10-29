@@ -36,6 +36,7 @@ A collection of specialized custom commands for Claude Code that streamline soft
 | `/review:after` | Post-implementation diff review | ✅ Available |
 | `/review:perf` | Performance analysis | ✅ Available |
 | `/review:prompt` | AI prompt quality evaluation | ✅ Available |
+| `/review:note` | Documentation and article quality review | ✅ Available |
 
 #### `/review:security`
 
@@ -66,6 +67,14 @@ Identifies performance bottlenecks and optimizes resource usage. Analyzes algori
 Evaluates and improves prompts for Large Language Models. Reviews clarity, structure, context management, safety, and maintainability.
 
 **Best for**: New prompt creation, underperforming prompts, maintainability improvements.
+
+---
+
+#### `/review:note`
+
+Evaluates documentation and articles for readability, consistency, and clarity. Prioritizes reader experience by identifying misleading expressions, ambiguous descriptions, and AI-generated writing patterns. Focuses on creating content that is read and understood, rather than just comprehensive.
+
+**Best for**: Blog posts, technical articles, documentation, tutorials, README files, release notes.
 
 ### Installation
 
@@ -101,7 +110,8 @@ your-project/
         ├── review:security.md
         ├── review:after.md
         ├── review:perf.md
-        └── review:prompt.md
+        ├── review:prompt.md
+        └── review:note.md
 ```
 
 **Note**: Japanese versions (`commands-ja/`) are available in the repository for reference but are not required for installation.
@@ -118,12 +128,14 @@ custom-prompts/
 │   ├── review:security.md
 │   ├── review:after.md
 │   ├── review:perf.md
-│   └── review:prompt.md
+│   ├── review:prompt.md
+│   └── review:note.md
 └── commands-ja/          # Japanese versions (for reference)
     ├── review:security.ja.md
     ├── review:after.ja.md
     ├── review:perf.ja.md
-    └── review:prompt.ja.md
+    ├── review:prompt.ja.md
+    └── review:note.ja.md
 ```
 
 ## Contributing
