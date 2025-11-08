@@ -30,6 +30,8 @@ A collection of specialized custom commands for Claude Code that streamline soft
 
 ### Available Commands
 
+#### Review Commands
+
 | Command | Purpose | Status |
 |---------|---------|--------|
 | `/review:security` | Security-focused review | ✅ Available |
@@ -37,6 +39,12 @@ A collection of specialized custom commands for Claude Code that streamline soft
 | `/review:perf` | Performance analysis | ✅ Available |
 | `/review:prompt` | AI prompt quality evaluation | ✅ Available |
 | `/review:note` | Documentation and article quality review | ✅ Available |
+
+#### Development Workflow Commands
+
+| Command | Purpose | Status |
+|---------|---------|--------|
+| `/commit` | Create git commits without auto-generated footers | ✅ Available |
 
 #### `/review:security`
 
@@ -76,6 +84,19 @@ Evaluates documentation and articles for readability, consistency, and clarity. 
 
 **Best for**: Blog posts, technical articles, documentation, tutorials, README files, release notes.
 
+---
+
+#### `/commit`
+
+Creates git commits using Conventional Commits format without Claude Code's auto-generated footers. Provides clean, standardized commit messages that follow team conventions.
+
+**Best for**: Projects with strict commit message policies, teams that prefer clean commit history, integration with automated changelog generation.
+
+**Features**:
+- Conventional Commits format: `<type>(<scope>): <description>`
+- Type list provided: feat, fix, docs, style, refactor, test, chore
+- No auto-generated footers (🤖 Generated with Claude Code...)
+
 ### Installation
 
 #### 1. Clone the Repository
@@ -107,6 +128,7 @@ After installation, your directory structure will look like:
 your-project/
 └── .claude/
     └── commands/
+        ├── commit.md
         ├── review:security.md
         ├── review:after.md
         ├── review:perf.md
@@ -125,12 +147,14 @@ custom-prompts/
 ├── CLAUDE.md             # Detailed guide for Claude Code
 ├── CONTRIBUTING.md       # Contribution guidelines
 ├── commands/             # Command files (for installation)
+│   ├── commit.md
 │   ├── review:security.md
 │   ├── review:after.md
 │   ├── review:perf.md
 │   ├── review:prompt.md
 │   └── review:note.md
 └── commands-ja/          # Japanese versions (for reference)
+    ├── commit.ja.md
     ├── review:security.ja.md
     ├── review:after.ja.md
     ├── review:perf.ja.md
