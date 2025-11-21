@@ -37,6 +37,7 @@ cp -r /path/to/custom-prompts/commands .claude/
 | `/review:security` | セキュリティ特化レビュー | ✅ 利用可能 |
 | `/review:after` | 実装後の差分レビュー | ✅ 利用可能 |
 | `/review:perf` | パフォーマンス分析 | ✅ 利用可能 |
+| `/review:coverage` | テストカバレッジと品質分析 | ✅ 利用可能 |
 | `/review:prompt` | AIプロンプト品質評価 | ✅ 利用可能 |
 | `/review:note` | 文書・記事品質レビュー | ✅ 利用可能 |
 
@@ -67,6 +68,14 @@ cp -r /path/to/custom-prompts/commands .claude/
 パフォーマンスボトルネックを特定し、リソース使用を最適化します。アルゴリズム、データベースクエリ、メモリ管理、I/O操作、キャッシング、並行性を分析します。
 
 **推奨**: パフォーマンス問題調査、大規模データ処理機能、APIエンドポイント、本番環境のパフォーマンス劣化
+
+---
+
+### `/review:coverage`
+
+テストカバレッジと品質を分析し、包括的なテストを確保します。テスト有効性の評価、カバレッジギャップの特定、テスト容易性の評価、テストの信頼性と保守性のレビューを行います。
+
+**推奨**: テスト品質評価、カバレッジギャップの特定、リリース前品質チェック、テスト戦略評価
 
 ---
 
@@ -132,6 +141,7 @@ your-project/
         ├── review:security.md
         ├── review:after.md
         ├── review:perf.md
+        ├── review:coverage.md
         ├── review:prompt.md
         └── review:note.md
 ```
@@ -151,6 +161,7 @@ custom-prompts/
 │   ├── review:security.md
 │   ├── review:after.md
 │   ├── review:perf.md
+│   ├── review:coverage.md
 │   ├── review:prompt.md
 │   └── review:note.md
 └── commands-ja/          # 日本語版（参照用）
@@ -158,6 +169,7 @@ custom-prompts/
     ├── review:security.ja.md
     ├── review:after.ja.md
     ├── review:perf.ja.md
+    ├── review:coverage.ja.md
     ├── review:prompt.ja.md
     └── review:note.ja.md
 ```
