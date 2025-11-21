@@ -1,7 +1,7 @@
 ---
 name: review:coverage
 description: Test coverage review analyzing test quality, coverage gaps, and test effectiveness
-version: 1.0.0
+version: 1.1.0
 ---
 
 # Test Coverage Review
@@ -55,6 +55,20 @@ Evaluate test code and coverage to ensure:
 - **If coverage targets are unclear**:
   - Suggest industry-standard targets based on code criticality
   - Focus on identifying critical gaps regardless of percentage targets
+
+## Important Notes
+- **Coverage percentage is not the only goal**: High coverage with poor tests is not valuable
+- **Quality over quantity**: Focus on meaningful tests that catch real bugs
+- **Test pyramid**: Maintain balance between unit, integration, and e2e tests
+- **Critical path focus**: 100% coverage of critical business logic is more important than overall percentage
+- **Testability matters**: Hard-to-test code often indicates design issues
+- **Test reliability**: Flaky tests undermine confidence and slow development
+- **Test maintainability**: Tests are code too and need to be maintainable
+- **Technology-specific patterns**: Different frameworks have different testing best practices
+- **Mutation testing consideration**: High coverage doesn't mean tests are effective at catching bugs
+- **Test performance**: Slow tests discourage running them frequently
+- **False sense of security**: Tests can give false confidence if they don't test the right things
+- **Regression prevention**: Tests should prevent regressions, not just satisfy metrics
 
 ## Review Perspectives
 
@@ -189,19 +203,6 @@ Quantitative analysis including:
 - Areas with highest and lowest coverage
 - Coverage vs. target metrics
 
-Present metrics in a clear format:
-```
-全体カバレッジ (Overall Coverage):
-- ライン/文カバレッジ: XX% (目標: YY%)
-- ブランチカバレッジ: XX% (目標: YY%)
-- 関数カバレッジ: XX% (目標: YY%)
-
-モジュール別カバレッジ (Coverage by Module):
-- ModuleA: XX% ✓ (目標達成)
-- ModuleB: XX% ⚠️ (目標未達)
-- ModuleC: XX% ❌ (要改善)
-```
-
 ### テスト戦略の分析 (Test Strategy Analysis)
 Evaluation of:
 - Test pyramid balance (unit/integration/e2e distribution)
@@ -315,79 +316,28 @@ Action plan for improving test coverage:
 12. Prioritize findings by risk and impact
 13. Provide actionable, specific testing recommendations
 
-## Important Notes
-- **Coverage percentage is not the only goal**: High coverage with poor tests is not valuable
-- **Quality over quantity**: Focus on meaningful tests that catch real bugs
-- **Test pyramid**: Maintain balance between unit, integration, and e2e tests
-- **Critical path focus**: 100% coverage of critical business logic is more important than overall percentage
-- **Testability matters**: Hard-to-test code often indicates design issues
-- **Test reliability**: Flaky tests undermine confidence and slow development
-- **Test maintainability**: Tests are code too and need to be maintainable
-- **Technology-specific patterns**: Different frameworks have different testing best practices
-- **Mutation testing consideration**: High coverage doesn't mean tests are effective at catching bugs
-- **Test performance**: Slow tests discourage running them frequently
-- **False sense of security**: Tests can give false confidence if they don't test the right things
-- **Regression prevention**: Tests should prevent regressions, not just satisfy metrics
-
-## Testing Best Practices by Test Type
+## Testing Best Practices
 
 ### Unit Tests
-- Test single units of functionality in isolation
-- Use test doubles for dependencies
-- Fast execution (milliseconds per test)
-- Focus on business logic and algorithms
-- Test edge cases and error conditions
-- Should be deterministic and repeatable
-- Independent of external systems
+- Test single units in isolation with test doubles for dependencies
+- Fast execution (milliseconds), deterministic, independent of external systems
+- Focus on business logic, algorithms, edge cases, and error conditions
 - Target: 70-90% coverage for business logic
 
 ### Integration Tests
-- Test interactions between components
-- Use real dependencies where practical
-- May involve databases, file systems, or external services
-- Verify data flow and integration contracts
-- Test error propagation between components
-- Use test databases or containers
-- Should clean up after execution
+- Test component interactions using real dependencies where practical
+- Verify data flow, integration contracts, and error propagation
+- Use test databases or containers, clean up after execution
 - Target: Critical integration points covered
 
 ### End-to-End Tests
-- Test complete user workflows
-- Use real application environment
-- Verify system behavior from user perspective
-- Focus on critical user journeys
-- Accept slower execution time
-- Should be stable and maintainable
-- Minimize number (test pyramid top)
+- Test complete user workflows from user perspective
+- Focus on critical user journeys, accept slower execution
+- Minimize number (test pyramid top), maintain stability
 - Target: Critical user flows covered
 
 ## Coverage Tools Reference
-
-When analyzing coverage, be aware of common tools:
-
-### JavaScript/TypeScript
-- **Jest**: Built-in coverage with Istanbul
-- **NYC**: Istanbul command line interface
-- **Codecov/Coveralls**: Coverage reporting services
-
-### Python
-- **Coverage.py**: Standard Python coverage tool
-- **pytest-cov**: pytest integration for coverage
-
-### Java/JVM
-- **JaCoCo**: Java code coverage library
-- **Cobertura**: Coverage tool for Java projects
-
-### Go
-- **go test -cover**: Built-in coverage tool
-- **gocov**: Alternative coverage tool
-
-### Ruby
-- **SimpleCov**: Code coverage for Ruby
-
-### C#/.NET
-- **Coverlet**: Cross-platform code coverage
-- **dotCover**: JetBrains coverage tool
+Common coverage tools include Jest/NYC (JS/TS), Coverage.py/pytest-cov (Python), JaCoCo/Cobertura (Java), go test -cover (Go), SimpleCov (Ruby), and Coverlet/dotCover (.NET). Identify the appropriate tool based on the project's technology stack.
 
 ## Questions to Consider During Review
 - Is test coverage sufficient for critical business logic?
@@ -405,22 +355,7 @@ When analyzing coverage, be aware of common tools:
 - Are there flaky or unreliable tests?
 - Does the test suite provide good feedback on failures?
 
-## Technology-Specific Considerations
-Consider testing characteristics specific to:
-- **Web applications**: UI component testing, API testing, browser automation
-- **APIs**: Contract testing, request/response validation, error handling
-- **Databases**: Data access layer testing, query testing, migration testing
-- **Microservices**: Service integration testing, API contract testing, resilience testing
-- **Frontend frameworks**: Component testing, state management testing, user interaction testing
-- **Backend frameworks**: Controller testing, service layer testing, repository testing
-- **Mobile applications**: Platform-specific testing, UI testing, offline behavior
-
 ## Mutation Testing Consideration
-While this review focuses on coverage metrics and test quality, consider recommending mutation testing:
-- Mutation testing verifies if tests actually catch bugs
-- Changes code (mutates) and checks if tests fail
-- Helps identify ineffective tests with good coverage
-- Tools: Stryker (JS), PITest (Java), mutmut (Python)
-- Complements coverage analysis for test effectiveness
+While this review focuses on coverage metrics and test quality, consider recommending mutation testing for verifying test effectiveness. Mutation testing changes code and checks if tests fail, helping identify ineffective tests. Common tools include Stryker (JS), PITest (Java), and mutmut (Python).
 
 Begin your review by understanding the testing context and technology stack, then systematically analyze test coverage, quality, and effectiveness, focusing on risk-based prioritization and actionable improvements.
