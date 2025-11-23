@@ -37,6 +37,7 @@ A collection of specialized custom commands for Claude Code that streamline soft
 | `/review:security` | Security-focused review | ✅ Available |
 | `/review:after` | Post-implementation diff review | ✅ Available |
 | `/review:perf` | Performance analysis | ✅ Available |
+| `/review:coverage` | Test coverage and quality analysis | ✅ Available |
 | `/review:prompt` | AI prompt quality evaluation | ✅ Available |
 | `/review:note` | Documentation and article quality review | ✅ Available |
 
@@ -67,6 +68,14 @@ Evaluates completed changes for quality standards and deployment readiness. Anal
 Identifies performance bottlenecks and optimizes resource usage. Analyzes algorithms, database queries, memory management, I/O operations, caching, and concurrency.
 
 **Best for**: Performance issue investigation, large data processing features, API endpoints, production performance degradation.
+
+---
+
+#### `/review:coverage`
+
+Analyzes test coverage and quality to ensure comprehensive testing. Evaluates test effectiveness, identifies coverage gaps, assesses testability, and reviews test reliability and maintainability.
+
+**Best for**: Test quality assessment, coverage gap identification, pre-release quality checks, test strategy evaluation.
 
 ---
 
@@ -132,6 +141,7 @@ your-project/
         ├── review:security.md
         ├── review:after.md
         ├── review:perf.md
+        ├── review:coverage.md
         ├── review:prompt.md
         └── review:note.md
 ```
@@ -151,6 +161,7 @@ custom-prompts/
 │   ├── review:security.md
 │   ├── review:after.md
 │   ├── review:perf.md
+│   ├── review:coverage.md
 │   ├── review:prompt.md
 │   └── review:note.md
 └── commands-ja/          # Japanese versions (for reference)
@@ -158,6 +169,7 @@ custom-prompts/
     ├── review:security.ja.md
     ├── review:after.ja.md
     ├── review:perf.ja.md
+    ├── review:coverage.ja.md
     ├── review:prompt.ja.md
     └── review:note.ja.md
 ```
