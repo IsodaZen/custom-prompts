@@ -6,21 +6,17 @@
 
 ## Quick Start
 
-Get started in 3 simple steps:
+Get started in 2 simple steps:
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/IsodaZen/custom-prompts.git
+# 1. Install as a plugin
+/plugin install custom-prompts
 
-# 2. Copy commands to your project
-cd your-project
-cp -r /path/to/custom-prompts/commands .claude/
-
-# 3. Use in Claude Code
+# 2. Use in Claude Code
 /review:security
 ```
 
-That's it! See [Installation](#installation) for more options.
+That's it! See [Installation](#installation) for alternative installation methods.
 
 ---
 
@@ -108,18 +104,44 @@ Creates git commits using Conventional Commits format without Claude Code's auto
 
 ### Installation
 
-#### 1. Clone the Repository
+#### Method 1: Plugin Installation (Recommended)
+
+Install directly as a Claude Code plugin:
 
 ```bash
-git clone https://github.com/IsodaZen/custom-prompts.git
-cd custom-prompts
+# Install from the plugin marketplace
+/plugin install custom-prompts
 ```
 
-#### 2. Configure Claude Code
+Or install from a local clone:
+
+```bash
+# Clone the repository
+git clone https://github.com/IsodaZen/custom-prompts.git
+
+# In Claude Code, install from local directory
+/plugin install /path/to/custom-prompts
+```
+
+After installation, verify with:
+
+```bash
+/help
+```
+
+All commands will be available immediately across your projects.
+
+#### Method 2: Manual Installation
+
+If you prefer manual installation or want to customize specific commands:
 
 **Project-level installation** (recommended for team sharing):
 
 ```bash
+# Clone the repository
+git clone https://github.com/IsodaZen/custom-prompts.git
+cd custom-prompts
+
 # Copy to your project's .claude directory
 cp -r commands .claude/
 ```
@@ -152,6 +174,8 @@ your-project/
 
 ```
 custom-prompts/
+├── .claude-plugin/       # Plugin metadata
+│   └── plugin.json      # Plugin configuration
 ├── README.md              # This file (English)
 ├── README.ja.md          # Japanese version
 ├── CLAUDE.md             # Detailed guide for Claude Code

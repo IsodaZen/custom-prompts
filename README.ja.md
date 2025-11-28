@@ -6,21 +6,17 @@
 
 ## クイックスタート
 
-3つの簡単なステップで始められます：
+2つの簡単なステップで始められます：
 
 ```bash
-# 1. リポジトリをクローン
-git clone https://github.com/IsodaZen/custom-prompts.git
+# 1. プラグインとしてインストール
+/plugin install custom-prompts
 
-# 2. プロジェクトにコマンドをコピー
-cd your-project
-cp -r /path/to/custom-prompts/commands .claude/
-
-# 3. Claude Codeで使用
+# 2. Claude Codeで使用
 /review:security
 ```
 
-これだけです！詳細は[インストール方法](#インストール方法)をご覧ください。
+これだけです！その他のインストール方法は[インストール方法](#インストール方法)をご覧ください。
 
 ---
 
@@ -108,18 +104,44 @@ Conventional Commits形式で、Claude Codeの自動生成フッターなしでG
 
 ## インストール方法
 
-### 1. リポジトリのクローン
+### 方法1: プラグインとしてインストール（推奨）
+
+Claude Codeプラグインとして直接インストール:
 
 ```bash
-git clone https://github.com/IsodaZen/custom-prompts.git
-cd custom-prompts
+# プラグインマーケットプレイスからインストール
+/plugin install custom-prompts
 ```
 
-### 2. Claude Codeへの設定
+またはローカルクローンからインストール:
+
+```bash
+# リポジトリをクローン
+git clone https://github.com/IsodaZen/custom-prompts.git
+
+# Claude Codeで、ローカルディレクトリからインストール
+/plugin install /path/to/custom-prompts
+```
+
+インストール後、確認:
+
+```bash
+/help
+```
+
+すべてのコマンドがすぐに全プロジェクトで利用可能になります。
+
+### 方法2: 手動インストール
+
+手動インストールを希望する場合や特定のコマンドをカスタマイズしたい場合:
 
 **プロジェクトレベルのインストール**（チームでの共有に推奨）:
 
 ```bash
+# リポジトリをクローン
+git clone https://github.com/IsodaZen/custom-prompts.git
+cd custom-prompts
+
 # プロジェクトの .claude ディレクトリにコピー
 cp -r commands .claude/
 ```
@@ -152,6 +174,8 @@ your-project/
 
 ```
 custom-prompts/
+├── .claude-plugin/       # プラグインメタデータ
+│   └── plugin.json      # プラグイン設定
 ├── README.md              # 英語版
 ├── README.ja.md          # このファイル（日本語版）
 ├── CLAUDE.md             # Claude Code向け詳細ガイド
