@@ -1,0 +1,31 @@
+{
+  "name": "custom-prompts",
+  "version": "1.0.0",
+  "description": "Specialized review and development workflow commands for Claude Code",
+  "author": {
+    "name": "IsodaZen",
+    "url": "https://github.com/IsodaZen"
+  },
+  "homepage": "https://github.com/IsodaZen/custom-prompts",
+  "repository": "https://github.com/IsodaZen/custom-prompts",
+  "license": "MIT",
+  "keywords": [
+    "review",
+    "security",
+    "performance",
+    "testing",
+    "documentation",
+    "commit",
+    "code-quality",
+    "workflow"
+  ],
+  "commands": [
+    "./commands/commit.md",
+    "./commands/review:after.md",
+    "./commands/review:coverage.md",
+    "./commands/review:note.md",
+    "./commands/review:perf.md",
+    "./commands/review:prompt.md",
+    "./commands/review:security.md"
+  ]
+}
