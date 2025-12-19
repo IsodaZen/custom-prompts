@@ -351,6 +351,159 @@ cp /path/to/custom-prompts/commands/review:your-command.md .claude/commands/
    - プロンプトインジェクションのリスクはないか
    - 適切な検証が含まれているか
 
+## 高度な使用例
+
+### プロジェクト固有のレビューコマンド作成
+
+既存のコマンドをベースに、プロジェクト固有のカスタムコマンドを作成できます：
+
+```markdown
+---
+name: review:fintech
+description: 金融システム特化のセキュリティレビュー
+version: 1.0.0
+---
+
+# 金融システムセキュリティレビュー
+
+## 追加要件
+- PCI-DSS準拠の確認
+- 金融取引の整合性検証
+- 監査ログの完全性
+- データ暗号化の強度（AES-256以上）
+- 二要素認証の実装
+...
+```
+
+このファイルを `.claude/commands/review:fintech.md` として保存すれば、`/review:fintech` コマンドが使えるようになります。
+
+### サブディレクトリでのコマンド整理
+
+チームやカテゴリごとにコマンドを整理することも可能です：
+
+```
+.claude/
+└── commands/
+    ├── frontend/
+    │   ├── component.md       # /component (project:frontend)
+    │   └── accessibility.md   # /accessibility (project:frontend)
+    └── backend/
+        ├── api.md             # /api (project:backend)
+        └── database.md        # /database (project:backend)
+```
+
+`/help` で表示される際、サブディレクトリ名が `(project:frontend)` のように表示されます。
+
+### CI/CDパイプラインとの統合
+
+レビューを自動化する例：
+
+```yaml
+# .github/workflows/security-review.yml
+name: Security Review
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  security-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Security Review
+        run: |
+          # Claude Code CLIを使用してレビュー実行
+          claude-code /review:security > security-review.md
+      - name: Upload Review Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: security-review
+          path: security-review.md
+```
+
+**注意**: CI/CD統合は、Claude Code CLIの将来的な機能として想定されています。現時点では手動でのレビュー実行を推奨します。
+
+## カスタマイズ例
+
+### プロンプトの編集
+
+各プロンプトファイルは標準的なMarkdown形式です。プロジェクト固有の要件に応じてカスタマイズできます。
+
+#### 例1: セキュリティレビューにカスタムチェック項目を追加
+
+```markdown
+### 12. プロジェクト固有のセキュリティ要件
+
+#### カスタム認証フロー
+評価項目:
+- 2段階認証の実装確認
+- 生体認証連携の安全性
+- セッションタイムアウトの適切性（15分）
+- ログアウト時のトークン無効化
+```
+
+#### 例2: 重大度レベルのカスタマイズ
+
+プロジェクトの性質に応じて、重大度レベルの定義を調整できます：
+
+```markdown
+## 重大度レベル定義（金融システム向け）
+
+- **Critical**:
+  - 金融取引に影響する問題
+  - 個人情報漏洩のリスク
+  - システム全体の停止
+  - 規制違反（PCI-DSS、GDPR等）
+
+- **High**:
+  - 主要機能の動作不良
+  - 顕著なパフォーマンス劣化
+  - セキュリティベストプラクティスからの逸脱
+  - 監査ログの不完全性
+```
+
+#### 例3: 出力フォーマットのカスタマイズ
+
+レビュー結果の出力形式を変更する場合：
+
+```markdown
+## 出力形式
+
+レビュー結果は以下の形式で出力:
+
+### プロジェクト名: [PROJECT_NAME]
+### レビュー日時: [TIMESTAMP]
+### レビュー担当: [REVIEWER]
+### レビュー範囲: [SCOPE]
+### コンプライアンス基準: [STANDARDS]
+
+[既存の出力形式...]
+```
+
+### プロジェクトテンプレートの作成
+
+チーム全体で使用するコマンドセットをテンプレート化できます：
+
+```bash
+# プロジェクトテンプレートの作成
+mkdir -p project-templates/web-app/.claude/commands
+
+# 必要なコマンドをコピー
+cp commands/review:security.md project-templates/web-app/.claude/commands/
+cp commands/review:after.md project-templates/web-app/.claude/commands/
+cp commands/review:perf.md project-templates/web-app/.claude/commands/
+
+# カスタマイズしたコマンドを追加
+cat > project-templates/web-app/.claude/commands/review:accessibility.md <<EOF
+# アクセシビリティレビュー用カスタムコマンド
+...
+EOF
+
+# 新規プロジェクトで使用
+cp -r project-templates/web-app/.claude new-project/
+```
+
 ## 追加リソース
 
 ### 参考資料

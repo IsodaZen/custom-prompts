@@ -213,6 +213,71 @@ Quick contribution steps:
 3. Follow the guidelines in [CONTRIBUTING.md](./CONTRIBUTING.md)
 4. Create a Pull Request
 
+## Best Practices
+
+### 1. Incremental Review Approach
+
+Instead of reviewing everything at once, use a staged approach:
+
+1. `/review:after` - Review overall changes
+2. `/review:security` - If changes involve authentication/authorization or external input handling
+3. `/review:perf` - If changes involve performance-critical features
+
+### 2. Document Coding Standards
+
+To get the highest quality reviews:
+
+- Document project-specific coding standards
+- Define clear acceptance criteria
+- Reference these documents during reviews
+
+### 3. Leverage Review Results
+
+Make the most of review outputs:
+
+```bash
+# Save review results to file (ask Claude to do this)
+# Files are saved with timestamps
+# Example: review_security_20250423_143022.md
+
+# Integrate with issue tracking
+# Transfer findings to GitHub Issues, Jira, etc.
+```
+
+### 4. Regular Review Schedule
+
+Maintain quality with regular reviews:
+
+- **Weekly**: `/review:after` for major changes
+- **Monthly**: `/review:security` for entire codebase
+- **Pre-release**: `/review:perf` for performance verification
+
+### 5. Team Knowledge Sharing
+
+Use review results to build team knowledge:
+
+- Document issues discovered in reviews
+- Add best practices to Wiki or documentation
+- Hold regular meetings to share review findings
+
+### 6. Continuous Improvement
+
+Improve prompts as your project grows:
+
+- Analyze missed issues in reviews
+- Add new check items to prompts
+- Incorporate team feedback
+
+### 7. Standardize Output Format
+
+Unify review result format across the team:
+
+- Standardize file output format
+- Share severity level definitions
+- Create review result templates
+
+---
+
 ## FAQ
 
 **Q: Do I need to install all commands?**
@@ -249,6 +314,30 @@ A: Please check:
 - Files are placed in the correct directory (`.claude/commands/` or `~/.claude/commands/`)
 - File names end with `.md` extension
 - Files contain front matter (section enclosed by `---`)
+
+**Q: Technical stack is not being recognized correctly**
+
+A:
+- Add technology stack information to README.md
+- Ensure configuration files (package.json, requirements.txt, etc.) are present in the project root
+- Respond accurately to Claude's questions about the tech stack
+- Claude will ask if it cannot auto-detect from configuration files
+
+**Q: Review results are too superficial**
+
+A:
+- Provide coding standards documentation to get comprehensive reviews
+- Specify review scope more precisely (by file or directory)
+- Conduct reviews in multiple sessions for large codebases
+- Without coding standards, reviews focus on Critical/High severity issues only
+
+**Q: Command file updates are not being reflected**
+
+A:
+- Verify file contents: `cat .claude/commands/review:security.md`
+- Check file timestamp: `ls -l .claude/commands/review:security.md`
+- Restart Claude Code if the issue persists (usually not necessary as commands are loaded at execution time)
+- Ensure file is saved correctly with proper encoding (UTF-8)
 
 ### License
 
