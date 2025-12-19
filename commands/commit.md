@@ -1,15 +1,27 @@
 ---
-allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git checkout:*)
+allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git diff:*)
 description: Create a git commit
 ---
 
+## Context
+
+- Current git status: !`git status`
+- Current git diff (staged and unstaged changes): !`git diff HEAD`
+- Current branch: !`git branch --show-current`
+- Recent commits: !`git log --oneline -10`
+
 ## Your task
 
-* 現在のリポジトリの修正に対して、Commitを実行してください。
+Based on the above changes, create a single git commit.
+
+* You have the capability to call multiple tools in a single response.
+* Stage and create the commit using a single message.
 
 ## Requirements
-
+* Do not use any other tools or do anything else.
+* Do not send any other text or messages besides these tool calls.
 * **No auto-generated footers** - Don't add Claude Code auto-generated footers to commit messages
+* Commit messages must use the language of CLAUDE.md
 
 ## Commit Messages
 
@@ -17,8 +29,6 @@ description: Create a git commit
 
 ```
 <type>(<scope>): <description>
-
-<body>
 ```
 
 ### Type List
