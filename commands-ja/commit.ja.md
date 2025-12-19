@@ -1,15 +1,27 @@
 ---
-allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git checkout:*)
+allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git diff:*)
 description: Gitコミットを作成する
 ---
 
+## コンテキスト
+
+- 現在のgitステータス: !`git status`
+- 現在のgit diff（ステージ済み・未ステージの変更）: !`git diff HEAD`
+- 現在のブランチ: !`git branch --show-current`
+- 最近のコミット: !`git log --oneline -10`
+
 ## タスク
 
-* 現在のリポジトリの修正に対して、Commitを実行してください。
+現在の変更に対して、単一のgitコミットを作成してください。
+
+* 1つのレスポンスで複数のツールを呼び出すことができます。
+* 1つのメッセージでステージングとコミットを実行してください。
 
 ## 要件
-
+* 他のツールの使用や他の操作は行わないでください。
+* これらのツール呼び出し以外のテキストやメッセージは送信しないでください。
 * **自動生成フッターなし** - Claude Codeの自動生成フッターをコミットメッセージに追加しないでください
+* コミットメッセージはCLAUDE.mdの言語を用いること。
 
 ## コミットメッセージ
 
@@ -17,8 +29,6 @@ description: Gitコミットを作成する
 
 ```
 <type>(<scope>): <description>
-
-<body>
 ```
 
 ### Type一覧
