@@ -141,6 +141,27 @@ Claude Code's system prompt is in English, so explicit language enforcement in e
 
 ---
 
+## Prompt File Language Guidelines
+
+### File Language Rules
+
+- **`commands/`**: All content in English (except quoted Japanese output examples)
+- **`commands-ja/`**: All content in Japanese
+
+### Important Distinction
+
+- **Language Requirements section**: User interaction language (always Japanese)
+- **Prompt file language**: Language of prompt itself (English for `commands/`, Japanese for `commands-ja/`)
+
+### Editing Verification
+
+When editing prompt files, verify language consistency:
+- `commands/` files: No Japanese except quoted output examples (e.g., `"問題は見つかりませんでした"`)
+- `commands-ja/` files: Pure Japanese throughout
+- Detection: Use regex `[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]+` for Japanese characters
+
+---
+
 ## Severity Level Definitions
 
 Use these severity levels consistently across all review outputs:
