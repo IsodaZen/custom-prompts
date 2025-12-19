@@ -1,6 +1,6 @@
 {
   "name": "custom-prompts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Specialized review and development workflow commands for Claude Code",
   "author": {
     "name": "IsodaZen",
