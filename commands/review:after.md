@@ -105,47 +105,75 @@ Assess readiness for deployment:
 
 ## Output Format
 
+**All review outputs must be written in Japanese.**
+
+**Efficient Output Policy**:
+- To optimize token usage, omit sections where no issues are found
+- Prioritize Critical and High severity issues
+- **DO NOT output positive aspects or well-implemented points**
+
 Provide your review in the following structure:
 
-### 概要 (Summary)
+### **Required Sections** (always output)
+
+#### Summary
 Brief overview of the changes made and overall assessment of implementation quality.
 
-### 変更内容の分析 (Change Analysis)
+#### Issues Found
+Categorized list of issues with:
+- **Severity**: Critical / High / Medium / Low
+- **Category**: Which review perspective it relates to
+- **Description**: Clear explanation of the issue
+- **Location**: Specific file and line references
+- **Impact**: How this affects system quality or functionality
+- **Recommended Action**: Suggested fix or improvement
+
+**Note**: If no issues are found, state "問題は見つかりませんでした" (No issues found) explicitly.
+
+#### Recommendations
+Prioritized improvement suggestions with:
+- **Must Fix**: Critical issues blocking deployment
+- **Should Fix**: Important improvements before deployment
+- **Nice to Have**: Enhancements for future consideration
+
+**Note**: If no recommendations, state deployment readiness status.
+
+### **Optional Sections** (only output when issues are present)
+
+#### Change Analysis
 Summary of:
 - Files and components changed
 - Scope and magnitude of changes
 - Key functional modifications
 
-### 要件充足度 (Requirements Fulfillment)
+**Note**: Only include if relevant to understanding the issues found.
+
+#### Requirements Fulfillment
 Assessment of how well the implementation meets stated requirements:
 - Fulfilled requirements
 - Partially fulfilled or missing requirements
 - Additional features or changes beyond requirements
 
-### 発見された問題 (Issues Found)
-Categorized list of issues with:
-- **重大度 (Severity)**: Critical / High / Medium / Low
-- **カテゴリ (Category)**: Which review perspective it relates to
-- **説明 (Description)**: Clear explanation of the issue
-- **場所 (Location)**: Specific file and line references
-- **影響 (Impact)**: How this affects system quality or functionality
-- **推奨対応 (Recommended Action)**: Suggested fix or improvement
+**Note**: Only include if requirements are not fully met or if there are concerns.
 
-### テストカバレッジ評価 (Test Coverage Assessment)
+#### Test Coverage Assessment
 Analysis of test completeness:
 - Coverage statistics (if available)
-- Well-tested areas
 - Areas needing more testing
 - Test quality observations
 
-### 破壊的変更の確認 (Breaking Changes Check)
+**Note**: Only include if test coverage issues are identified.
+
+#### Breaking Changes Check
 Identification of:
 - Any breaking changes introduced
 - Backward compatibility issues
 - Required migration steps
 - Deprecation notices needed
 
-### デプロイメント考慮事項 (Deployment Considerations)
+**Note**: Only include if breaking changes are detected.
+
+#### Deployment Considerations
 Deployment-related recommendations:
 - Pre-deployment checklist items
 - Configuration changes needed
@@ -153,28 +181,21 @@ Deployment-related recommendations:
 - Monitoring points to watch
 - Rollback procedures
 
-### 追加レビューの推奨 (Additional Review Recommendations)
-Based on the nature of changes, suggest specialized reviews if needed:
-- **セキュリティレビューが推奨される場合**: If changes involve authentication, authorization, data handling, external inputs, or security-sensitive operations, recommend running `/review:security`
-- **パフォーマンスレビューが推奨される場合**: If changes involve database queries, large data processing, API endpoints, caching mechanisms, or resource-intensive operations, recommend running `/review:perf`
+**Note**: Only include if deployment concerns are identified.
 
-### 推奨事項 (Recommendations)
-Prioritized improvement suggestions with:
-- **必須 (Must Fix)**: Critical issues blocking deployment
-- **推奨 (Should Fix)**: Important improvements before deployment
-- **任意 (Nice to Have)**: Enhancements for future consideration
-
-### コード例 (Code Examples)
+#### Code Examples
 Concrete examples showing:
-- Current problematic patterns (if any)
+- Current problematic patterns
 - Suggested improvements
-- Best practice implementations
 
-### 肯定的な側面 (Positive Aspects)
-Highlight well-implemented aspects:
-- Good practices observed
-- Effective solutions
-- Quality improvements made
+**Note**: Only include if specific code issues require illustration.
+
+#### Additional Review Recommendations
+Based on the nature of changes, suggest specialized reviews if needed:
+- **When security review is recommended**: If changes involve authentication, authorization, data handling, external inputs, or security-sensitive operations, recommend running `/review:security`
+- **When performance review is recommended**: If changes involve database queries, large data processing, API endpoints, caching mechanisms, or resource-intensive operations, recommend running `/review:perf`
+
+**Note**: Only include if specialized reviews are warranted.
 
 ## Review Process
 1. **Gather prerequisites from user** (in Japanese):
@@ -207,11 +228,15 @@ Highlight well-implemented aspects:
   - **Medium**: Code quality issues affecting maintainability, missing test coverage for important paths, incomplete documentation for complex logic, minor performance concerns
   - **Low**: Code style inconsistencies, naming convention deviations, minor refactoring opportunities, cosmetic issues
   - When coding standards are not provided, report only Critical and High severity issues
+- **Token efficiency guidelines**:
+  - **DO NOT output positive aspects, good practices, or well-implemented solutions**
+  - Only output sections where issues or concerns are identified
+  - Omit optional sections if they contain no findings
+  - Focus output on actionable problems and recommendations
 - Balance thoroughness with practicality
 - Consider the maturity and criticality of the affected system
 - Recognize different types of changes (features vs. bugfixes) may have different review priorities
 - Provide constructive feedback that helps improve code quality
-- Acknowledge good practices and well-implemented solutions
 - Be specific with file locations and line references when identifying issues
 - Use git diff between specified branches/commits to identify exact changes
 
