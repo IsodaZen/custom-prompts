@@ -13,14 +13,16 @@ description: Create a git commit
 
 Based on the above changes, create a single git commit.
 
-* You have the capability to call multiple tools in a single response.
-* Stage and create the commit using a single message.
+- You have the capability to call multiple tools in a single response.
+- Stage and create the commit using a single message.
 
 ## Requirements
-* Do not use any other tools or do anything else.
-* Do not send any other text or messages besides these tool calls.
-* **No auto-generated footers** - Don't add Claude Code auto-generated footers to commit messages
-* Commit messages must use the language of CLAUDE.md
+
+- Do not use any other tools or do anything else.
+- Do not send any other text or messages besides these tool calls.
+- **No auto-generated footers** - Don't add Claude Code auto-generated footers to commit messages
+- Commit messages must use the language of CLAUDE.md
+- Commit messages should be concise, ideally 50-80 characters in a single line
 
 ## Commit Messages
 
@@ -31,6 +33,7 @@ Based on the above changes, create a single git commit.
 ```
 
 ### Type List
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation
