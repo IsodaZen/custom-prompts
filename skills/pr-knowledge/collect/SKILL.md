@@ -1,10 +1,10 @@
 ---
 name: collect
-description: マージ済みPRから知見を抽出し .knowledge/ に蓄積する。差分とレビュー議論の両方を読み、機能・ドメイン知識、アーキテクチャ、開発Tips、コード規約を、OKF形式（簡易版）のMarkdownとして記録・更新する。「YYYY-MM-DDのPRから知見を記録して」「このPR群の知見を返して」のように、日付またはPR番号を伴って呼ばれたときに使う。単なるPR一覧・要約、リリースノートやCHANGELOGの作成には使わない。pr-knowledgeファミリー（pr-knowledge:collect / pr-knowledge:orchestrate）の収集役。
+description: マージ済みPRから知見を抽出し .knowledge/ に蓄積する。差分とレビュー議論の両方を読み、機能・ドメイン知識、アーキテクチャ、開発Tips、コード規約を、OKF形式（簡易版）のMarkdownとして記録・更新する。「YYYY-MM-DDのPRから知見を記録して」「このPR群の知見を返して」のように、日付またはPR番号を伴って呼ばれたときに使う。単なるPR一覧・要約、リリースノートやCHANGELOGの作成には使わない。`.knowledge/` が未初期化なら pr-knowledge:init の実行を促して停止する。pr-knowledgeファミリー（pr-knowledge:collect / pr-knowledge:init / pr-knowledge:orchestrate）の収集役。
 license: MIT
 metadata:
   author: IsodaZen
-  version: "1.0.0"
+  version: "2.0.0"
 ---
 
 # PR知見蓄積スキル（collect）
@@ -72,6 +72,7 @@ $pr-knowledge:collect #123 #124 #131
       "title": "集約境界の切り方",
       "description": "一行要約",
       "tags": ["ddd", "設計判断"],
+      "status": "confirmed",
       "body": "## 要点\n...\n\n## 詳細\n...",
       "sources": ["https://github.com/org/repo/pull/123"],
       "existing_file": ".knowledge/architecture/aggregate-boundaries.md",
@@ -96,24 +97,57 @@ $pr-knowledge:collect #123 #124 #131
 1. カレントディレクトリがGitリポジトリである（`git rev-parse --show-toplevel`）
 2. `gh` が使え、認証済みである（`gh auth status`）
 3. リポジトリがGitHubリモートを持つ（`gh repo view --json nameWithOwner`）
+4. `.knowledge/config.json` が存在する
 
 以降のパスはリポジトリルート基準。`gh api` の `{owner}` `{repo}` は gh が現在のリポジトリから自動置換するため、**手で書き換えない。**
+
+### 設定の読み込み
+
+作業前に必ず `.knowledge/config.json` を読む。ここが全パラメータの単一の情報源。
+
+```bash
+cat .knowledge/config.json
+```
+
+| キー | 用途 |
+| :--- | :--- |
+| `schema_version` | 互換性チェック。**`1` 以外なら停止する** |
+| `base_branches` | 手順1の検索条件。**推測しない** |
+| `timezone` | 日付境界の解釈 |
+| `types` | 使用可能な `type` 値とディレクトリ対応 |
+| `exclude_authors` / `exclude_labels` | 検索段階での除外 |
+| `pr_search_limit` | 手順1の取得上限 |
+| `language` | 知見本文の記述言語 |
+| `frontmatter` / `body_sections` / `status_values` | 出力フォーマット |
+
+バンドルのルートは `.knowledge/` 固定。
+
+**以下の場合は自分で作成・修復せず、`pr-knowledge:init` の実行を促して停止する。**
+
+- `config.json` が存在しない
+- JSONとしてパースできない
+- `schema_version` が `1` でない
+
+ベースブランチやタイムゾーンを推測で埋めると、対象PRが丸ごとズレる。
 
 ## 手順
 
 ### 1. 対象PRを特定する
 
+検索条件は `config.json` から組み立てる。
+
 ```bash
-gh pr list --state merged --limit 100 \
-  --search "merged:<DATE> base:<DEFAULT_BRANCH> -author:app/dependabot -author:app/renovate" \
+gh pr list --state merged --limit <pr_search_limit> \
+  --search "merged:<DATE> base:<BASE> -author:<EXCLUDED> -label:<EXCLUDED>" \
   --json number,title,url,author,mergedAt,labels
 ```
 
-- `<DEFAULT_BRANCH>` は `gh repo view --json defaultBranchRef` で取得する。リリースブランチやトピックブランチへのマージを拾わないため、ベースブランチは必ず絞る。運用が異なるリポジトリでは呼び出し側に確認する。
-- GitHubの検索はUTC基準。ローカル日付（例: JST）が意図なら境界を明示する:
+- `base:` は `base_branches` の各要素。複数ある場合はブランチごとに検索し、結果を結合して重複を除く（GitHub検索の `base:` はOR結合できない）。
+- `-author:` は `exclude_authors`、`-label:` は `exclude_labels` の各要素を並べる。
+- 日付境界は `timezone` で解釈する。GitHubの検索はUTC基準なので、`Asia/Tokyo` なら明示する:
   `merged:<DATE>T00:00:00+09:00..<DATE>T23:59:59+09:00`
-  タイムゾーンが不明なら確認する。
 - 該当0件なら報告して終了。ファイルは作らない。
+- **取得件数が `pr_search_limit` に達した場合は、取りこぼしがある前提で報告する。** 黙って先へ進まない。対象期間を分割して再実行するよう促す。
 - PR番号が直接指定された場合はこの手順を飛ばす。
 
 ### 2. 各PRの本文と差分を読む
@@ -169,10 +203,13 @@ gh api repos/{owner}/{repo}/issues/<番号>/comments --paginate
 
 - 結論が出ないまま時間切れでマージ → `deferred` に回す
 - 「今回は見送り、次で対応」と方針が明示されている → 知見として記録し、本文に「未対応の課題」として明記する
+- 方針は決まったが根拠が弱い（一人の意見のみ、検証なし） → 記録するが、フロントマターに `status: draft` を付けて確度を示す
 
 ### 4. 知見を抽出する
 
 **PRの要約を作るのではない。** 「次に同じ領域を触る人が知らないと損をすること」だけを拾う。
+
+**使える `type` は `config.json` の `types[].id` がすべて。** ここに無い値を新設しない。既定構成では以下。
 
 | type | 拾うもの |
 | :--- | :--- |
@@ -181,6 +218,8 @@ gh api repos/{owner}/{repo}/issues/<番号>/comments --paginate
 | `architecture` | 構成、レイヤ境界、依存の方向、設計判断とその理由 |
 | `dev-tip` | 開発・デバッグ・運用の勘所、ハマりどころと回避策 |
 | `code-convention` | コーディング規約、命名、レビューで繰り返し指摘される事項 |
+
+どのtypeにも収まらない知見が出た場合は、無理に押し込まず `deferred` に回し、type追加の要否を報告する。
 
 除外するもの:
 
@@ -207,9 +246,11 @@ ls .knowledge/*/
 **「同一テーマ」の判定基準** — 以下を上から順に当てる。
 
 1. `type` が異なれば別テーマ。同一ファイルにまとめない
-2. `type` が同じで、扱う対象（モジュール、概念、業務ルール）が同一なら同一テーマ → 既存を更新
-3. 対象は同じだが観点が異なる（例: 同じモジュールの「設計理由」と「デバッグの勘所」）→ `type` が違うはずなので別ファイル。同じなら既存ファイルにセクションを追加
+2. `type` が同じで、扱う対象（モジュール、概念、業務ルール）が同一なら同一テーマ → 既存ファイルを更新する
+3. `type` が同じで対象が異なるなら別ファイルを作る
 4. 判断がつかない場合は**新規作成せず**、既存ファイルへの追記を選ぶか、呼び出し側に確認する
+
+同じモジュールでも「設計理由」と「デバッグの勘所」は `type` が異なる（`architecture` と `dev-tip`）ため、規則1で自動的に別ファイルになる。
 
 ファイルが増えて `ls` だけで見通せなくなったら、`index.md` から各 type 配下の `index.md` へ分割し、階層化する。
 
@@ -219,9 +260,13 @@ ls .knowledge/*/
 
 #### ディレクトリ構成
 
+`pr-knowledge:init` が生成した構成に従う。ディレクトリは `config.json` の `types[].dir` を使い、**自分で新設しない。**
+
 ```
 .knowledge/
+├── config.json           # 設定（読み取りのみ。書き換えない）
 ├── index.md              # 全概念の一覧（type別）
+├── _template.md          # フロントマター雛形
 ├── features/
 ├── domain/
 ├── architecture/
@@ -233,14 +278,17 @@ ls .knowledge/*/
 
 #### フロントマター（OKF簡易版）
 
-OKFが必須とするのは `type` のみ。本バンドルでは以下を必須運用とする。
+新規ファイルは `_template.md` をコピーして埋める。**キー構成は `_template.md` が正。** `config.json` の `frontmatter` と食い違う場合はテンプレートに従い、不一致を報告する（設定の修正は `pr-knowledge:init` の責務）。
+
+本文は `config.json` の `language` で書く。
 
 ```yaml
 ---
-type: architecture          # 必須。上表の5値のいずれか
+type: architecture          # 必須。config.json の types[].id のいずれか
 title: 集約境界の切り方
 description: 一行要約
 tags: [ddd, 設計判断]         # 任意
+status: confirmed           # 任意。確度が低い場合のみ draft
 updated: 2026-08-25
 sources:
   - https://github.com/org/repo/pull/123
@@ -249,26 +297,14 @@ sources:
 
 #### 本文
 
-```markdown
-## 要点
+セクション構成は `config.json` の `body_sections` に従う（既定は 要点 / 詳細 / 注意点 / 関連）。
 
-（3行以内。ここだけ読めば伝わるように書く）
+- **要点** は3行以内。ここだけ読めば伝わるように書く
+- **詳細** は背景、理由、具体例。コード片は最小限に
+- **注意点** はハマりどころ、やってはいけないこと。無ければ省略可
+- **関連** は通常のMarkdownリンクで相互参照する。リンクを張ったら相手側にも逆リンクを追加する
 
-## 詳細
-
-（背景、理由、具体例。コード片は最小限に）
-
-## 注意点
-
-（あれば。ハマりどころ、やってはいけないこと）
-
-## 関連
-
-- [イベント設計の方針](../architecture/event-design.md)
-```
-
-- 関連概念は通常のMarkdownリンクで相互参照する。リンクを張ったら相手側にも逆リンクを追加する。
-- レビュー議論が出典の場合、該当スレッドの `html_url` を `## 詳細` 内に残すと後から辿れる。
+レビュー議論が出典の場合、該当スレッドの `html_url` を `## 詳細` 内に残すと後から辿れる。
 
 #### 追記のルール
 
@@ -286,15 +322,20 @@ sources:
 
 書き込み後に更新する。
 
+見出しは `config.json` の `types[].label` に一致させる。**見出しを追加・改名・削除しない。前文もそのまま残す。**
+
 ```markdown
 # Knowledge Index
 
-## architecture
+このディレクトリは pr-knowledge スキルが管理します。
+書式とベースブランチ等の設定は config.json を参照してください。
+
+## アーキテクチャ
 
 - [集約境界の切り方](architecture/aggregate-boundaries.md) — 集約をどこで割るかの判断基準
 ```
 
-`.knowledge/` が存在しない場合は、ディレクトリと `index.md` を新規作成してよい。
+`.knowledge/` やディレクトリが存在しない場合は**作成せず**、`pr-knowledge:init` の実行を促して停止する。
 
 ### 7. 報告する
 
