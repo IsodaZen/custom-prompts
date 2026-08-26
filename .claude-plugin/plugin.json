@@ -22,7 +22,7 @@
   ],
   "skills": [
     "./skills/commit",
-    "./skills/pr-knowledge",
+    "./skills/pr-knowledge/collect",
     "./skills/review-after",
     "./skills/review-coverage",
     "./skills/review-note",

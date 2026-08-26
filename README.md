@@ -49,7 +49,7 @@ Skills can be invoked explicitly by name (e.g. `/review-security`) or triggered 
 
 | Skill | Purpose | Status |
 |-------|---------|--------|
-| `pr-knowledge` | Extract and accumulate knowledge from merged PRs | ✅ Available |
+| `pr-knowledge:collect` | Extract and accumulate knowledge from merged PRs | ✅ Available |
 
 #### `review-security`
 
@@ -112,7 +112,7 @@ Creates git commits using Conventional Commits format without Claude Code's auto
 
 ---
 
-#### `pr-knowledge`
+#### `pr-knowledge:collect`
 
 Extracts reusable knowledge from merged PRs — reading both the diff and the review discussion — and accumulates it as OKF-style (simplified) Markdown under `.knowledge/`. Captures feature behavior, domain knowledge, architecture decisions, dev tips, and code conventions, deduplicating against existing entries. Invoke with a date, date range, or PR numbers (e.g. "record knowledge from the PRs merged on 2026-08-25").
 
@@ -180,7 +180,8 @@ your-project/
         ├── commit/
         │   └── SKILL.md
         ├── pr-knowledge/
-        │   └── SKILL.md
+        │   └── collect/
+        │       └── SKILL.md
         ├── review-security/
         │   └── SKILL.md
         ├── review-after/
@@ -211,7 +212,8 @@ custom-prompts/
     ├── commit/
     │   └── SKILL.md
     ├── pr-knowledge/
-    │   └── SKILL.md
+    │   └── collect/
+    │       └── SKILL.md
     ├── review-security/
     │   └── SKILL.md
     ├── review-after/

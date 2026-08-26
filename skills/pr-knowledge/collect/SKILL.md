@@ -1,13 +1,13 @@
 ---
-name: pr-knowledge
-description: マージ済みPRから知見を抽出し .knowledge/ に蓄積する。差分とレビュー議論の両方を読み、機能・ドメイン知識、アーキテクチャ、開発Tips、コード規約を、OKF形式（簡易版）のMarkdownとして記録・更新する。「YYYY-MM-DDのPRから知見を記録して」「このPR群の知見を返して」のように、日付またはPR番号を伴って呼ばれたときに使う。単なるPR一覧・要約、リリースノートやCHANGELOGの作成には使わない。
+name: collect
+description: マージ済みPRから知見を抽出し .knowledge/ に蓄積する。差分とレビュー議論の両方を読み、機能・ドメイン知識、アーキテクチャ、開発Tips、コード規約を、OKF形式（簡易版）のMarkdownとして記録・更新する。「YYYY-MM-DDのPRから知見を記録して」「このPR群の知見を返して」のように、日付またはPR番号を伴って呼ばれたときに使う。単なるPR一覧・要約、リリースノートやCHANGELOGの作成には使わない。pr-knowledgeファミリー（pr-knowledge:collect / pr-knowledge:orchestrate）の収集役。
 license: MIT
 metadata:
   author: IsodaZen
   version: "1.0.0"
 ---
 
-# PR知見蓄積スキル
+# PR知見蓄積スキル（collect）
 
 マージ済みPRを起点に、将来のDev&Opsで再利用できる知見を抽出する。差分だけでなく**レビューでの議論**を一次情報として扱う。
 
@@ -26,9 +26,9 @@ metadata:
 ### 対象（必須）
 
 ```
-$pr-knowledge 2026-08-25
-$pr-knowledge 2026-08-20..2026-08-25
-$pr-knowledge #123 #124 #131
+$pr-knowledge:collect 2026-08-25
+$pr-knowledge:collect 2026-08-20..2026-08-25
+$pr-knowledge:collect #123 #124 #131
 ```
 
 - 日付は `YYYY-MM-DD` を正とする。相対表現はローカル日付に解決してから使う。

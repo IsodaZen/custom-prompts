@@ -49,7 +49,7 @@
 
 | スキル | 用途 | 状態 |
 |--------|------|------|
-| `pr-knowledge` | マージ済みPRからの知見抽出・蓄積 | ✅ 利用可能 |
+| `pr-knowledge:collect` | マージ済みPRからの知見抽出・蓄積 | ✅ 利用可能 |
 
 ### `review-security`
 
@@ -112,7 +112,7 @@ Conventional Commits形式で、Claude Codeの自動生成フッターなしでG
 
 ---
 
-### `pr-knowledge`
+### `pr-knowledge:collect`
 
 マージ済みPRから、差分だけでなく**レビューでの議論**も読み取り、再利用可能な知見をOKF形式（簡易版）のMarkdownとして `.knowledge/` に蓄積します。機能の振る舞い、ドメイン知識、アーキテクチャの設計判断、開発Tips、コード規約を抽出し、既存の記述と突き合わせて重複を避けます。日付・期間・PR番号を指定して呼び出します（例:「2026-08-25にマージされたPRから知見を記録して」）。
 
@@ -180,7 +180,8 @@ your-project/
         ├── commit/
         │   └── SKILL.md
         ├── pr-knowledge/
-        │   └── SKILL.md
+        │   └── collect/
+        │       └── SKILL.md
         ├── review-security/
         │   └── SKILL.md
         ├── review-after/
@@ -211,7 +212,8 @@ custom-prompts/
     ├── commit/
     │   └── SKILL.md
     ├── pr-knowledge/
-    │   └── SKILL.md
+    │   └── collect/
+    │       └── SKILL.md
     ├── review-security/
     │   └── SKILL.md
     ├── review-after/
