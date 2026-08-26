@@ -45,6 +45,12 @@
 |--------|------|------|
 | `commit` | 自動生成フッターなしでGitコミット作成 | ✅ 利用可能 |
 
+### 知見管理スキル
+
+| スキル | 用途 | 状態 |
+|--------|------|------|
+| `pr-knowledge:collect` | マージ済みPRからの知見抽出・蓄積 | ✅ 利用可能 |
+
 ### `review-security`
 
 セキュリティ脆弱性を特定し、OWASP Top 10への対応状況を評価します。認証、認可、入力検証、インジェクション脆弱性、データ保護、シークレット管理、APIセキュリティをカバーします。
@@ -103,6 +109,16 @@ Conventional Commits形式で、Claude Codeの自動生成フッターなしでG
 - Conventional Commits形式: `<type>(<scope>): <description>`
 - Typeリストを提供: feat, fix, docs, style, refactor, test, chore
 - 自動生成フッターなし（🤖 Generated with Claude Code...）
+
+---
+
+### `pr-knowledge:collect`
+
+マージ済みPRから、差分だけでなく**レビューでの議論**も読み取り、再利用可能な知見をOKF形式（簡易版）のMarkdownとして `.knowledge/` に蓄積します。機能の振る舞い、ドメイン知識、アーキテクチャの設計判断、開発Tips、コード規約を抽出し、既存の記述と突き合わせて重複を避けます。日付・期間・PR番号を指定して呼び出します（例:「2026-08-25にマージされたPRから知見を記録して」）。
+
+**推奨**: PR履歴からの知見ベース構築、レビューでしか残らない設計判断の記録、実態に即したオンボーディング資料の維持
+
+**補足**: `.knowledge/` に直接書き込む「ファイル更新モード」と、書き込まずに構造化された結果を返す「返却モード」（オーケストレータ配下のワーカーとして使う場合）の両方をサポートします。
 
 ## インストール方法
 
@@ -163,6 +179,9 @@ your-project/
     └── skills/
         ├── commit/
         │   └── SKILL.md
+        ├── pr-knowledge/
+        │   └── collect/
+        │       └── SKILL.md
         ├── review-security/
         │   └── SKILL.md
         ├── review-after/
@@ -192,6 +211,9 @@ custom-prompts/
 └── skills/               # スキルディレクトリ（インストール用）
     ├── commit/
     │   └── SKILL.md
+    ├── pr-knowledge/
+    │   └── collect/
+    │       └── SKILL.md
     ├── review-security/
     │   └── SKILL.md
     ├── review-after/

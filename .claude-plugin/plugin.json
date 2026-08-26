@@ -17,10 +17,12 @@
     "documentation",
     "commit",
     "code-quality",
-    "workflow"
+    "workflow",
+    "knowledge-management"
   ],
   "skills": [
     "./skills/commit",
+    "./skills/pr-knowledge/collect",
     "./skills/review-after",
     "./skills/review-coverage",
     "./skills/review-note",
