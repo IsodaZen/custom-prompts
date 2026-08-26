@@ -4,7 +4,7 @@ description: マージ済みPRから知見を抽出し .knowledge/ に蓄積す�
 license: MIT
 metadata:
   author: IsodaZen
-  version: "2.0.0"
+  version: "1.0.0"
 ---
 
 # PR知見蓄積スキル（collect）

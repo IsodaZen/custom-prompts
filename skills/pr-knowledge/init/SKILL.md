@@ -83,7 +83,7 @@ gh repo view --json nameWithOwner,defaultBranchRef
   ],
   "exclude_authors": ["app/dependabot", "app/renovate"],
   "exclude_labels": [],
-  "pr_search_limit": 100,
+  "pr_search_limit": 500,
   "frontmatter": {
     "required": ["type", "title", "description", "updated", "sources"],
     "optional": ["tags", "status"]
