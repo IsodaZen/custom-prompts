@@ -45,6 +45,12 @@ Skills can be invoked explicitly by name (e.g. `/review-security`) or triggered 
 |-------|---------|--------|
 | `commit` | Create git commits without auto-generated footers | ✅ Available |
 
+#### Knowledge Management Skills
+
+| Skill | Purpose | Status |
+|-------|---------|--------|
+| `pr-knowledge` | Extract and accumulate knowledge from merged PRs | ✅ Available |
+
 #### `review-security`
 
 Identifies security vulnerabilities and assesses OWASP Top 10 compliance. Covers authentication, authorization, input validation, injection vulnerabilities, data protection, secrets management, and API security.
@@ -103,6 +109,16 @@ Creates git commits using Conventional Commits format without Claude Code's auto
 - Conventional Commits format: `<type>(<scope>): <description>`
 - Type list provided: feat, fix, docs, style, refactor, test, chore
 - No auto-generated footers (🤖 Generated with Claude Code...)
+
+---
+
+#### `pr-knowledge`
+
+Extracts reusable knowledge from merged PRs — reading both the diff and the review discussion — and accumulates it as OKF-style (simplified) Markdown under `.knowledge/`. Captures feature behavior, domain knowledge, architecture decisions, dev tips, and code conventions, deduplicating against existing entries. Invoke with a date, date range, or PR numbers (e.g. "record knowledge from the PRs merged on 2026-08-25").
+
+**Best for**: Building a searchable knowledge base from PR history, capturing design rationale that only exists in review threads, onboarding docs that stay current with actual team decisions.
+
+**Note**: Supports both a file-update mode (writes directly to `.knowledge/`) and a return mode (returns structured findings without writing, for use as a sub-agent worker under an orchestrator).
 
 ### Installation
 
@@ -163,6 +179,8 @@ your-project/
     └── skills/
         ├── commit/
         │   └── SKILL.md
+        ├── pr-knowledge/
+        │   └── SKILL.md
         ├── review-security/
         │   └── SKILL.md
         ├── review-after/
@@ -191,6 +209,8 @@ custom-prompts/
 ├── CONTRIBUTING.md       # Contribution guidelines
 └── skills/               # Skill directories (for installation)
     ├── commit/
+    │   └── SKILL.md
+    ├── pr-knowledge/
     │   └── SKILL.md
     ├── review-security/
     │   └── SKILL.md
