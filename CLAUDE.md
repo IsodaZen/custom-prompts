@@ -1,6 +1,6 @@
 # Claude Code Custom Prompts: AI Execution Guide
 
-**Document Purpose**: This document provides execution instructions for Claude Code AI when working with custom prompt commands in this project. All information is tailored specifically for AI execution context.
+**Document Purpose**: This document provides execution instructions for Claude Code AI when working with custom prompt skills in this project. All information is tailored specifically for AI execution context.
 
 **Target Audience**: Claude Code AI Assistant
 
@@ -12,7 +12,7 @@
 
 **Language**: All interactions with users MUST be conducted in Japanese, regardless of which language version of the prompt is being used.
 
-**Prerequisite Collection**: Before starting any review command, you MUST collect the following information from the user:
+**Prerequisite Collection**: Before starting any review skill, you MUST collect the following information from the user:
 1. Review scope (specific files, directories, or components to analyze)
 2. Output format preference (console output or file output with timestamp)
 3. Coding standards availability (if available, request the document or URL)
@@ -34,12 +34,12 @@
 - You SHOULD mention this limitation to the user
 - You SHOULD recommend providing coding standards for comprehensive review
 
-**Delegation**: When specialized concerns are identified, you SHOULD recommend appropriate specialized commands:
-- Security vulnerabilities → `/review:security`
-- Performance bottlenecks → `/review:perf`
-- Test quality issues → `/review:coverage`
-- Documentation issues → `/review:note`
-- AI prompt quality → `/review:prompt`
+**Delegation**: When specialized concerns are identified, you SHOULD recommend appropriate specialized skills:
+- Security vulnerabilities → `review-security` skill
+- Performance bottlenecks → `review-perf` skill
+- Test quality issues → `review-coverage` skill
+- Documentation issues → `review-note` skill
+- AI prompt quality → `review-prompt` skill
 
 ### MUST NOT Rules
 
@@ -68,12 +68,12 @@
 ### 3. Language Consistency
 - Enforce Japanese for all user-facing outputs
 - Apply regardless of prompt file language version
-- Include explicit language requirements in all command prompts
+- Include explicit language requirements in all skill prompts
 
 ### 4. Delegation to Specialized Reviews
 - Separate general concerns from specialized domains
-- Recommend specific commands when appropriate
-- Avoid overlap between general and specialized review commands
+- Recommend specific skills when appropriate
+- Avoid overlap between general and specialized review skills
 
 ---
 
@@ -122,9 +122,9 @@ If detection fails after steps 1-3, ask the user explicitly:
 
 ## Language Enforcement Implementation
 
-### Requirement for All Command Prompts
+### Requirement for All Skill Prompts
 
-Every command prompt file (e.g., `review:security.md`, `review:after.md`) MUST include the following section at the beginning:
+Every skill file (e.g., `skills/review-security/SKILL.md`, `skills/review-after/SKILL.md`) MUST include the following section at the beginning:
 
 ```markdown
 ## Language Requirements
@@ -137,7 +137,7 @@ Every command prompt file (e.g., `review:security.md`, `review:after.md`) MUST i
 
 ### Rationale
 
-Claude Code's system prompt is in English, so explicit language enforcement in each command prompt is necessary to ensure consistent Japanese output for Japanese users.
+Claude Code's system prompt is in English, so explicit language enforcement in each skill prompt is necessary to ensure consistent Japanese output for Japanese users.
 
 ---
 
@@ -150,22 +150,25 @@ Use these severity levels consistently across all review outputs:
 - **Medium**: Maintainability issues affecting code quality, test coverage gaps in critical paths, incomplete documentation for complex logic
 - **Low**: Code style inconsistencies, naming convention deviations, minor refactoring opportunities
 
-**Note**: Some specialized commands (e.g., `/review:security`) may include additional severity levels like "Info" for observations without immediate risk.
+**Note**: Some specialized skills (e.g., `review-security`) may include additional severity levels like "Info" for observations without immediate risk.
 
 ---
 
-## Command Prompt Structure Template
+## Skill Structure Template
 
-All command prompts should follow this structure:
+All skills live at `skills/<skill-name>/SKILL.md` and should follow this structure:
 
 ```markdown
 ---
-name: command:name
-description: One-line description of the command
-version: 1.0.0
+name: skill-name
+description: One-line description of the skill
+license: MIT
+metadata:
+  author: your-name
+  version: "1.0.0"
 ---
 
-# Command Title
+# Skill Title
 
 ## Language Requirements
 [Language enforcement section - see above]
@@ -204,11 +207,11 @@ Critical considerations and guidelines
 
 ## Execution Workflow
 
-Follow this workflow for all review commands:
+Follow this workflow for all review skills:
 
 ### 1. Initialize
 - Read workspace context
-- Identify the command being executed
+- Identify the skill being executed
 
 ### 2. Detect Technical Stack
 - Follow the Technical Stack Detection Protocol
@@ -221,7 +224,7 @@ Follow this workflow for all review commands:
 - Clarify any ambiguities
 
 ### 4. Execute Review
-- Analyze code according to command-specific instructions
+- Analyze code according to skill-specific instructions
 - Apply severity classifications
 - Identify patterns and issues
 - Generate recommendations
@@ -233,14 +236,14 @@ Follow this workflow for all review commands:
 - Provide actionable recommendations
 
 ### 6. Recommend Follow-up (if applicable)
-- Suggest specialized commands for identified concerns
+- Suggest specialized skills for identified concerns
 - Offer additional review options
 
 ---
 
 ## Git Diff Commands for Change Reviews
 
-For commands that review changes (e.g., `/review:after`), provide these git command examples to users:
+For skills that review changes (e.g., `review-after`), provide these git command examples to users:
 
 **Compare branches:**
 ```bash
@@ -271,7 +274,7 @@ Ask users to provide branch names or commit IDs for accurate diff analysis.
 For detailed information beyond AI execution instructions, refer users to:
 
 - **User Guide**: [README.md](./README.md) - Installation, usage, FAQ, best practices
-- **Developer Guide**: [CONTRIBUTING.md](./CONTRIBUTING.md) - Creating and customizing commands, contribution guidelines
+- **Developer Guide**: [CONTRIBUTING.md](./CONTRIBUTING.md) - Creating and customizing skills, contribution guidelines
 - **Japanese README**: [README.ja.md](./README.ja.md) - Japanese version of user guide
 
 ---

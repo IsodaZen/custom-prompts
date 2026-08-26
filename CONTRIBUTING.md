@@ -1,6 +1,6 @@
 # コントリビューションガイド
 
-Custom Prompts for Claude Code プロジェクトへの貢献に興味を持っていただき、ありがとうございます。このドキュメントでは、新しいコマンドの作成や既存コマンドの改善に関するガイドラインを提供します。
+Custom Prompts for Claude Code プロジェクトへの貢献に興味を持っていただき、ありがとうございます。このドキュメントでは、新しいスキルの作成や既存スキルの改善に関するガイドラインを提供します。
 
 ## 目次
 
@@ -33,12 +33,12 @@ Custom Prompts for Claude Code プロジェクトへの貢献に興味を持っ�
 
 ### バグ報告
 
-コマンドプロンプトにバグを見つけた場合：
+スキルのプロンプトにバグを見つけた場合：
 
 1. **既存のIssueを確認**して重複を避ける
 2. **新しいIssueを作成**し、以下を含める：
    - 明確で説明的なタイトル
-   - コマンド名とバージョン
+   - スキル名とバージョン
    - 再現手順
    - 期待される動作と実際の動作
    - 環境情報（Claude Codeのバージョン、OS）
@@ -55,20 +55,20 @@ Custom Prompts for Claude Code プロジェクトへの貢献に興味を持っ�
    - 潜在的な実装アプローチ（任意）
    - 動作例
 
-### 新規コマンドの作成
+### 新規スキルの作成
 
-新しいレビューコマンドを提案する場合：
+新しいレビュースキルを提案する場合：
 
 1. **まずIssueを開いて**以下を議論：
-   - コマンドの目的と範囲
+   - スキルの目的と範囲
    - カバーすべきレビュー観点
-   - 既存コマンドとの違い
+   - 既存スキルとの違い
 2. **フィードバックを待つ**（実装開始前）
 3. **開発ガイドライン**に従う
 
-### 既存コマンドの改善
+### 既存スキルの改善
 
-既存コマンドを改善する場合：
+既存スキルを改善する場合：
 
 1. **改善内容を特定**：
    - 不足しているレビュー観点
@@ -80,18 +80,21 @@ Custom Prompts for Claude Code プロジェクトへの貢献に興味を持っ�
 
 ## 開発ガイドライン
 
-### コマンドファイルの構造
+### スキルファイルの構造
 
-すべてのコマンドは以下の構造に従う必要があります：
+すべてのスキルは `skills/<skill-name>/SKILL.md` に配置し、以下の構造に従う必要があります：
 
 ```markdown
 ---
-name: review:commandname
-description: コマンドの1行説明
-version: 1.0.0
+name: skill-name
+description: スキルの1行説明
+license: MIT
+metadata:
+  author: your-name
+  version: "1.0.0"
 ---
 
-# コマンドタイトル
+# スキルタイトル
 
 ## 役割
 役割と専門性を定義
@@ -125,14 +128,14 @@ version: 1.0.0
 ### フロントマターの仕様
 
 **必須フィールド:**
-- `name`: コマンド名（形式: `review:something`）
-- `description`: 1行の説明
-- `version`: セマンティックバージョニング（1.0.0）
+- `name`: スキル名（ディレクトリ名と一致させる。例: `review-something`）
+- `description`: 1行の説明。Claudeが会話内容から自動的にスキルをトリガーする際の判断材料になるため、目的とユースケースが伝わる説明にする
 
 **オプションフィールド:**
-- `allowed-tools`: コマンドが使用できるツールのリスト
-- `argument-hint`: コマンド引数のヒント
-- `model`: 使用する特定のモデル
+- `license`: ライセンス識別子（本プロジェクトでは `MIT`）
+- `metadata.author`: 作成者名
+- `metadata.version`: セマンティックバージョニング（例: `1.0.0`）
+- `compatibility`: 特定のツールやCLIへの依存がある場合の注記
 
 ### 設計原則
 
@@ -149,24 +152,18 @@ version: 1.0.0
 
 **3. 言語の一貫性**
 - ユーザーとの会話はすべて日本語で実施
-- これはプロンプトのどの言語版を使用している場合でも適用
+- これはスキルのどの言語版ガイドを参照している場合でも適用
 - 前提条件に含める：「このプロンプトのどの言語版を使用している場合でも、ユーザーとの会話はすべて日本語で実施してください。」
 
 **4. 専門性の分離**
 - 特定のレビュー観点に焦点を当てる
-- 適切な場合は専門コマンドを推奨
+- 適切な場合は専門スキルを推奨
 
 ### ファイル命名と配置
 
-**英語版:**
-- 配置場所: `commands/`
-- 命名規則: `review:commandname.md`
-- 例: `commands/review:security.md`
-
-**日本語版:**
-- 配置場所: `commands-ja/`
-- 命名規則: `review:commandname.ja.md`
-- 例: `commands-ja/review:security.ja.md`
+- 配置場所: `skills/<skill-name>/SKILL.md`
+- ディレクトリ名とフロントマターの `name` は一致させる（例: `skills/review-security/SKILL.md` の `name: review-security`）
+- 日本語話者向けの内容説明は、個別の `-ja` ディレクトリを作らず [README.ja.md](./README.ja.md) にまとめる。スキル自身は実行時に常に日本語で会話するため、言語別のスキル本体を複製する必要はない
 
 ### 重大度レベルの定義
 
@@ -181,7 +178,7 @@ version: 1.0.0
 ### Gitワークフロー
 
 **ブランチ命名規則:**
-- 機能追加: `feature/command-name` または `feature/description`
+- 機能追加: `feature/skill-name` または `feature/description`
 - バグ修正: `fix/issue-description`
 - ドキュメント: `docs/description`
 
@@ -197,7 +194,7 @@ docs/update-readme
 形式: `<type>: <subject>`
 
 **Type:**
-- `feat`: 新機能（新しいコマンド）
+- `feat`: 新機能（新しいスキル）
 - `fix`: バグ修正
 - `docs`: ドキュメントのみの変更
 - `style`: フォーマット、セミコロン忘れなど
@@ -207,9 +204,9 @@ docs/update-readme
 
 **例:**
 ```
-feat: add review:deps command for dependency analysis
-fix: correct severity level definitions in review:security
-docs: update CLAUDE.md with new command structure
+feat: add review-deps skill for dependency analysis
+fix: correct severity level definitions in review-security
+docs: update CLAUDE.md with new skill structure
 ```
 
 ## プルリクエストプロセス
@@ -227,32 +224,29 @@ docs: update CLAUDE.md with new command structure
 
 実装後、以下を確認：
 
-- [ ] フロントマターがすべて正しく設定されている
-- [ ] 日本語版と英語版の両方が存在する
+- [ ] フロントマターがすべて正しく設定されている（`name` がディレクトリ名と一致している）
 - [ ] 設計原則に従っている
 - [ ] 重大度レベルの定義が一貫している
-- [ ] ファイル名が規則に従っている（`review:name.md`）
-- [ ] 適切なディレクトリに配置されている
+- [ ] ディレクトリ構成が規則に従っている（`skills/skill-name/SKILL.md`）
 
 ### 3. セルフレビュー
 
-可能であれば、`/review:prompt` コマンドで自己レビューを実施：
+可能であれば、`review-prompt` スキルで自己レビューを実施：
 
 ```bash
-# commands/ディレクトリに移動
-cd commands
-
-# 新しいコマンドをレビュー
-/review:prompt review:your-command.md
+# 新しいスキルファイルをレビュー
+# Claude Codeで次のように依頼する:
+review-prompt スキルで skills/your-skill-name/SKILL.md をレビューして
 ```
 
 ### 4. ドキュメント更新
 
 必要に応じて以下を更新：
 
-- [ ] `README.md` - 新しいコマンドを一覧に追加
+- [ ] `README.md` - 新しいスキルを一覧に追加
 - [ ] `README.ja.md` - 同上（日本語版）
 - [ ] `CLAUDE.md` - 必要に応じて使用例を追加
+- [ ] `.claude-plugin/plugin.json` - `skills` 配列に新しいスキルディレクトリを追加
 
 ### 5. コミットとプッシュ
 
@@ -261,7 +255,7 @@ cd commands
 git add .
 
 # コミット（規則に従ったメッセージ）
-git commit -m "feat: add review:example command"
+git commit -m "feat: add review-example skill"
 
 # プッシュ
 git push origin feature/your-feature-name
@@ -286,7 +280,7 @@ git push origin feature/your-feature-name
 
 ### ローカルテスト
 
-新しいコマンドや変更をテストする方法：
+新しいスキルや変更をテストする方法：
 
 **1. ローカル環境にインストール**
 
@@ -295,22 +289,22 @@ git push origin feature/your-feature-name
 mkdir test-project
 cd test-project
 
-# .claude/commandsディレクトリを作成
-mkdir -p .claude/commands
+# .claude/skillsディレクトリを作成
+mkdir -p .claude/skills
 
-# 開発中のコマンドをコピー
-cp /path/to/custom-prompts/commands/review:your-command.md .claude/commands/
+# 開発中のスキルをコピー
+cp -r /path/to/custom-prompts/skills/review-your-skill .claude/skills/
 ```
 
 **2. Claude Codeでテスト**
 
 ```bash
 # Claude Codeを起動
-# コマンドが認識されているか確認
+# スキルが認識されているか確認
 /help
 
-# コマンドを実行
-/review:your-command
+# スキルを実行（名前を指定して明示的に呼び出す）
+/review-your-skill
 ```
 
 **3. 異なるシナリオでテスト**
@@ -318,12 +312,13 @@ cp /path/to/custom-prompts/commands/review:your-command.md .claude/commands/
 - 最小限の情報しか提供しない場合
 - 技術スタックが不明な場合
 - エッジケース（大規模プロジェクト、複雑な構造など）
+- Claudeが説明文に基づいて自動的にスキルをトリガーするケース
 
 ### 検証チェックリスト
 
-実装したコマンドが以下を満たしているか確認：
+実装したスキルが以下を満たしているか確認：
 
-- [ ] コマンドが正しく認識される（`/help`に表示）
+- [ ] スキルが正しく認識される（`/help`に表示、または関連する依頼で自動トリガーされる）
 - [ ] ユーザーとの対話が日本語で実施される
 - [ ] 必要な情報を適切に収集する
 - [ ] 出力が構造化されている
@@ -333,7 +328,7 @@ cp /path/to/custom-prompts/commands/review:your-command.md .claude/commands/
 
 ### セルフレビューガイド
 
-`/review:prompt` を使用してセルフレビューする際の観点：
+`review-prompt` スキルを使用してセルフレビューする際の観点：
 
 1. **明確性と具体性**
    - タスクと期待される出力が明確か
@@ -353,15 +348,18 @@ cp /path/to/custom-prompts/commands/review:your-command.md .claude/commands/
 
 ## 高度な使用例
 
-### プロジェクト固有のレビューコマンド作成
+### プロジェクト固有のレビュースキル作成
 
-既存のコマンドをベースに、プロジェクト固有のカスタムコマンドを作成できます：
+既存のスキルをベースに、プロジェクト固有のカスタムスキルを作成できます：
 
 ```markdown
 ---
-name: review:fintech
+name: review-fintech
 description: 金融システム特化のセキュリティレビュー
-version: 1.0.0
+license: MIT
+metadata:
+  author: your-name
+  version: "1.0.0"
 ---
 
 # 金融システムセキュリティレビュー
@@ -375,24 +373,26 @@ version: 1.0.0
 ...
 ```
 
-このファイルを `.claude/commands/review:fintech.md` として保存すれば、`/review:fintech` コマンドが使えるようになります。
+このファイルを `.claude/skills/review-fintech/SKILL.md` として保存すれば、`review-fintech` スキルが（明示的な呼び出し・自動トリガーの両方で）使えるようになります。
 
-### サブディレクトリでのコマンド整理
+### 関連スキルの整理
 
-チームやカテゴリごとにコマンドを整理することも可能です：
+チームやカテゴリごとにスキルを整理する場合は、名前にプレフィックスを付けて論理的にグループ化できます：
 
 ```
 .claude/
-└── commands/
-    ├── frontend/
-    │   ├── component.md       # /component (project:frontend)
-    │   └── accessibility.md   # /accessibility (project:frontend)
-    └── backend/
-        ├── api.md             # /api (project:backend)
-        └── database.md        # /database (project:backend)
+└── skills/
+    ├── frontend-component/
+    │   └── SKILL.md
+    ├── frontend-accessibility/
+    │   └── SKILL.md
+    ├── backend-api/
+    │   └── SKILL.md
+    └── backend-database/
+        └── SKILL.md
 ```
 
-`/help` で表示される際、サブディレクトリ名が `(project:frontend)` のように表示されます。
+各スキルは独立したディレクトリを持つフラットな構成になります。ディレクトリの入れ子ではなく、命名規則でグループを表現してください。
 
 ### CI/CDパイプラインとの統合
 
@@ -414,7 +414,7 @@ jobs:
       - name: Run Security Review
         run: |
           # Claude Code CLIを使用してレビュー実行
-          claude-code /review:security > security-review.md
+          claude-code /review-security > security-review.md
       - name: Upload Review Results
         uses: actions/upload-artifact@v3
         with:
@@ -428,7 +428,7 @@ jobs:
 
 ### プロンプトの編集
 
-各プロンプトファイルは標準的なMarkdown形式です。プロジェクト固有の要件に応じてカスタマイズできます。
+各 `SKILL.md` は標準的なMarkdown形式です。プロジェクト固有の要件に応じてカスタマイズできます。
 
 #### 例1: セキュリティレビューにカスタムチェック項目を追加
 
@@ -483,20 +483,25 @@ jobs:
 
 ### プロジェクトテンプレートの作成
 
-チーム全体で使用するコマンドセットをテンプレート化できます：
+チーム全体で使用するスキルセットをテンプレート化できます：
 
 ```bash
 # プロジェクトテンプレートの作成
-mkdir -p project-templates/web-app/.claude/commands
+mkdir -p project-templates/web-app/.claude/skills
 
-# 必要なコマンドをコピー
-cp commands/review:security.md project-templates/web-app/.claude/commands/
-cp commands/review:after.md project-templates/web-app/.claude/commands/
-cp commands/review:perf.md project-templates/web-app/.claude/commands/
+# 必要なスキルをコピー
+cp -r skills/review-security project-templates/web-app/.claude/skills/
+cp -r skills/review-after project-templates/web-app/.claude/skills/
+cp -r skills/review-perf project-templates/web-app/.claude/skills/
 
-# カスタマイズしたコマンドを追加
-cat > project-templates/web-app/.claude/commands/review:accessibility.md <<EOF
-# アクセシビリティレビュー用カスタムコマンド
+# カスタマイズしたスキルを追加
+mkdir -p project-templates/web-app/.claude/skills/review-accessibility
+cat > project-templates/web-app/.claude/skills/review-accessibility/SKILL.md <<EOF
+---
+name: review-accessibility
+description: アクセシビリティレビュー用カスタムスキル
+license: MIT
+---
 ...
 EOF
 
@@ -508,7 +513,7 @@ cp -r project-templates/web-app/.claude new-project/
 
 ### 参考資料
 
-- [Claude Code公式ドキュメント](https://docs.claude.com/ja/docs/claude-code/slash-commands)
+- [Claude Code公式ドキュメント（Agent Skills）](https://docs.claude.com/ja/docs/claude-code/skills)
 - [CLAUDE.md](./CLAUDE.md) - 詳細な開発ガイド
 - [README.md](./README.md) - プロジェクト概要
 

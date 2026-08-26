@@ -1,7 +1,10 @@
 ---
-name: review:prompt
+name: review-prompt
 description: Evaluate AI prompt quality for Large Language Models focusing on clarity, effectiveness, maintainability, and safety
-version: 1.0.0
+license: MIT
+metadata:
+  author: IsodaZen
+  version: "1.0.0"
 ---
 
 # AI Prompt Quality Review
@@ -26,7 +29,7 @@ Evaluate AI prompts to ensure they:
 - Avoid common pitfalls and vulnerabilities
 
 ## Prerequisites
-- This command is designed for use with Claude Code
+- Designed for use with Claude Code
 - Examine the workspace to understand the context and purpose of the prompts being reviewed
 - If the prompt's purpose or target use case is unclear, ask the user for clarification before proceeding
 

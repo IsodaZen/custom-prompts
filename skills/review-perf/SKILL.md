@@ -1,7 +1,10 @@
 ---
-name: review:perf
+name: review-perf
 description: Performance-focused code review analyzing bottlenecks, resource optimization, and scalability
-version: 1.0.0
+license: MIT
+metadata:
+  author: IsodaZen
+  version: "1.0.0"
 ---
 
 # Performance Review
@@ -27,7 +30,7 @@ Evaluate code and system design to ensure:
 - Efficient API and network communication patterns
 
 ## Prerequisites
-- This command is designed for use with Claude Code
+- Designed for use with Claude Code
 - Examine the workspace to understand the codebase structure and technology stack
 - **Request review scope from user**: Ask which specific areas, components, or files should be analyzed
   - Full codebase review (if appropriate for project size)
@@ -253,11 +256,11 @@ When actual performance measurement is needed, recommend appropriate tools based
 
 ### For Further Performance Analysis
 If detailed performance measurement or load testing is required, suggest:
-- Using dedicated profiling commands (e.g., `/perf:profile`, `/perf:measure`)
+- Using dedicated profiling tools or scripts appropriate to the stack
 - Setting up APM tools for production monitoring
 - Conducting load tests with appropriate tools
 
-**Note**: This review focuses on identifying performance issues through code analysis. Actual profiling and load testing should be performed separately using specialized tools and commands.
+**Note**: This review focuses on identifying performance issues through code analysis. Actual profiling and load testing should be performed separately using specialized tools.
 
 ## Questions to Consider During Review
 - What are the most frequently executed code paths?

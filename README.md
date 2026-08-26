@@ -13,7 +13,7 @@ Get started in 2 simple steps:
 /plugin install custom-prompts
 
 # 2. Use in Claude Code
-/review:security
+/review-security
 ```
 
 That's it! See [Installation](#installation) for alternative installation methods.
@@ -22,28 +22,30 @@ That's it! See [Installation](#installation) for alternative installation method
 
 ## Overview
 
-A collection of specialized custom commands for Claude Code that streamline software development reviews. Each command focuses on specific perspectives (security, performance, technical debt, etc.) and provides flexible, project-adaptable analysis with both English and Japanese versions.
+A collection of specialized Claude Code **skills** that streamline software development reviews. Each skill focuses on specific perspectives (security, performance, technical debt, etc.) and provides flexible, project-adaptable analysis with both English and Japanese versions.
 
-### Available Commands
+Skills can be invoked explicitly by name (e.g. `/review-security`) or triggered automatically by Claude when your request matches a skill's description — you don't have to remember exact names.
 
-#### Review Commands
+### Available Skills
 
-| Command | Purpose | Status |
-|---------|---------|--------|
-| `/review:security` | Security-focused review | ✅ Available |
-| `/review:after` | Post-implementation diff review | ✅ Available |
-| `/review:perf` | Performance analysis | ✅ Available |
-| `/review:coverage` | Test coverage and quality analysis | ✅ Available |
-| `/review:prompt` | AI prompt quality evaluation | ✅ Available |
-| `/review:note` | Documentation and article quality review | ✅ Available |
+#### Review Skills
 
-#### Development Workflow Commands
+| Skill | Purpose | Status |
+|-------|---------|--------|
+| `review-security` | Security-focused review | ✅ Available |
+| `review-after` | Post-implementation diff review | ✅ Available |
+| `review-perf` | Performance analysis | ✅ Available |
+| `review-coverage` | Test coverage and quality analysis | ✅ Available |
+| `review-prompt` | AI prompt quality evaluation | ✅ Available |
+| `review-note` | Documentation and article quality review | ✅ Available |
 
-| Command | Purpose | Status |
-|---------|---------|--------|
-| `/commit` | Create git commits without auto-generated footers | ✅ Available |
+#### Development Workflow Skills
 
-#### `/review:security`
+| Skill | Purpose | Status |
+|-------|---------|--------|
+| `commit` | Create git commits without auto-generated footers | ✅ Available |
+
+#### `review-security`
 
 Identifies security vulnerabilities and assesses OWASP Top 10 compliance. Covers authentication, authorization, input validation, injection vulnerabilities, data protection, secrets management, and API security.
 
@@ -51,7 +53,7 @@ Identifies security vulnerabilities and assesses OWASP Top 10 compliance. Covers
 
 ---
 
-#### `/review:after`
+#### `review-after`
 
 Evaluates completed changes for quality standards and deployment readiness. Analyzes requirements fulfillment, change impact, code quality, test coverage, and documentation.
 
@@ -59,7 +61,7 @@ Evaluates completed changes for quality standards and deployment readiness. Anal
 
 ---
 
-#### `/review:perf`
+#### `review-perf`
 
 Identifies performance bottlenecks and optimizes resource usage. Analyzes algorithms, database queries, memory management, I/O operations, caching, and concurrency.
 
@@ -67,7 +69,7 @@ Identifies performance bottlenecks and optimizes resource usage. Analyzes algori
 
 ---
 
-#### `/review:coverage`
+#### `review-coverage`
 
 Analyzes test coverage and quality to ensure comprehensive testing. Evaluates test effectiveness, identifies coverage gaps, assesses testability, and reviews test reliability and maintainability.
 
@@ -75,7 +77,7 @@ Analyzes test coverage and quality to ensure comprehensive testing. Evaluates te
 
 ---
 
-#### `/review:prompt`
+#### `review-prompt`
 
 Evaluates and improves prompts for Large Language Models. Reviews clarity, structure, context management, safety, and maintainability.
 
@@ -83,7 +85,7 @@ Evaluates and improves prompts for Large Language Models. Reviews clarity, struc
 
 ---
 
-#### `/review:note`
+#### `review-note`
 
 Evaluates documentation and articles for readability, consistency, and clarity. Prioritizes reader experience by identifying misleading expressions, ambiguous descriptions, and AI-generated writing patterns. Focuses on creating content that is read and understood, rather than just comprehensive.
 
@@ -91,7 +93,7 @@ Evaluates documentation and articles for readability, consistency, and clarity. 
 
 ---
 
-#### `/commit`
+#### `commit`
 
 Creates git commits using Conventional Commits format without Claude Code's auto-generated footers. Provides clean, standardized commit messages that follow team conventions.
 
@@ -129,11 +131,11 @@ After installation, verify with:
 /help
 ```
 
-All commands will be available immediately across your projects.
+All skills will be available immediately across your projects.
 
 #### Method 2: Manual Installation
 
-If you prefer manual installation or want to customize specific commands:
+If you prefer manual installation or want to customize specific skills:
 
 **Project-level installation** (recommended for team sharing):
 
@@ -143,14 +145,14 @@ git clone https://github.com/IsodaZen/custom-prompts.git
 cd custom-prompts
 
 # Copy to your project's .claude directory
-cp -r commands .claude/
+cp -r skills .claude/
 ```
 
 **User-level installation** (available across all projects):
 
 ```bash
 # Copy to user's .claude directory
-cp -r commands ~/.claude/
+cp -r skills ~/.claude/
 ```
 
 After installation, your directory structure will look like:
@@ -158,17 +160,24 @@ After installation, your directory structure will look like:
 ```
 your-project/
 └── .claude/
-    └── commands/
-        ├── commit.md
-        ├── review:security.md
-        ├── review:after.md
-        ├── review:perf.md
-        ├── review:coverage.md
-        ├── review:prompt.md
-        └── review:note.md
+    └── skills/
+        ├── commit/
+        │   └── SKILL.md
+        ├── review-security/
+        │   └── SKILL.md
+        ├── review-after/
+        │   └── SKILL.md
+        ├── review-perf/
+        │   └── SKILL.md
+        ├── review-coverage/
+        │   └── SKILL.md
+        ├── review-prompt/
+        │   └── SKILL.md
+        └── review-note/
+            └── SKILL.md
 ```
 
-**Note**: Japanese versions (`commands-ja/`) are available in the repository for reference but are not required for installation.
+**Note**: A Japanese-language guide to each skill's content is available in this README's [Japanese version](./README.ja.md) for reference. Skills always converse with you in Japanese regardless of which guide you read — there is no separate `-ja` skill variant to install.
 
 ## File Structure
 
@@ -180,22 +189,21 @@ custom-prompts/
 ├── README.ja.md          # Japanese version
 ├── CLAUDE.md             # Detailed guide for Claude Code
 ├── CONTRIBUTING.md       # Contribution guidelines
-├── commands/             # Command files (for installation)
-│   ├── commit.md
-│   ├── review:security.md
-│   ├── review:after.md
-│   ├── review:perf.md
-│   ├── review:coverage.md
-│   ├── review:prompt.md
-│   └── review:note.md
-└── commands-ja/          # Japanese versions (for reference)
-    ├── commit.ja.md
-    ├── review:security.ja.md
-    ├── review:after.ja.md
-    ├── review:perf.ja.md
-    ├── review:coverage.ja.md
-    ├── review:prompt.ja.md
-    └── review:note.ja.md
+└── skills/               # Skill directories (for installation)
+    ├── commit/
+    │   └── SKILL.md
+    ├── review-security/
+    │   └── SKILL.md
+    ├── review-after/
+    │   └── SKILL.md
+    ├── review-perf/
+    │   └── SKILL.md
+    ├── review-coverage/
+    │   └── SKILL.md
+    ├── review-prompt/
+    │   └── SKILL.md
+    └── review-note/
+        └── SKILL.md
 ```
 
 ## Contributing
@@ -203,8 +211,8 @@ custom-prompts/
 We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines on:
 
 - Reporting bugs and suggesting features
-- Creating new commands
-- Improving existing commands
+- Creating new skills
+- Improving existing skills
 - Development workflow and testing
 
 Quick contribution steps:
@@ -219,9 +227,9 @@ Quick contribution steps:
 
 Instead of reviewing everything at once, use a staged approach:
 
-1. `/review:after` - Review overall changes
-2. `/review:security` - If changes involve authentication/authorization or external input handling
-3. `/review:perf` - If changes involve performance-critical features
+1. `review-after` - Review overall changes
+2. `review-security` - If changes involve authentication/authorization or external input handling
+3. `review-perf` - If changes involve performance-critical features
 
 ### 2. Document Coding Standards
 
@@ -248,9 +256,9 @@ Make the most of review outputs:
 
 Maintain quality with regular reviews:
 
-- **Weekly**: `/review:after` for major changes
-- **Monthly**: `/review:security` for entire codebase
-- **Pre-release**: `/review:perf` for performance verification
+- **Weekly**: `review-after` for major changes
+- **Monthly**: `review-security` for entire codebase
+- **Pre-release**: `review-perf` for performance verification
 
 ### 5. Team Knowledge Sharing
 
@@ -280,40 +288,36 @@ Unify review result format across the team:
 
 ## FAQ
 
-**Q: Do I need to install all commands?**
+**Q: Do I need to install all skills?**
 
-A: No, you can selectively install only the commands you need.
-
-**Q: Do I need to install the Japanese versions (commands-ja/)?**
-
-A: No, they are not required for installation. Install the English versions from the `commands/` directory. Japanese versions are available for reference if you want to review the command content in Japanese. Regardless of which version you use, conversations with Claude will be conducted in Japanese.
+A: No, you can selectively install only the skills you need.
 
 **Q: Should I use project-level or user-level installation?**
 
 A:
-- **Project-level** (`.claude/commands/`): When you want to share with your team or customize for a specific project
-- **User-level** (`~/.claude/commands/`): When you want to use across all projects or for personal customization
+- **Project-level** (`.claude/skills/`): When you want to share with your team or customize for a specific project
+- **User-level** (`~/.claude/skills/`): When you want to use across all projects or for personal customization
 
-**Q: What happens if the same command exists at both project and user levels?**
+**Q: What happens if the same skill exists at both project and user levels?**
 
-A: According to Claude Code's official specification, conflicts between user-level and project-level commands are not supported. Please install to only one location.
+A: According to Claude Code's official specification, conflicts between user-level and project-level skills are not supported. Please install to only one location.
 
-**Q: Do I need to restart Claude Code after modifying command files?**
+**Q: Do I need to restart Claude Code after modifying skill files?**
 
-A: No, command files are loaded at execution time, so no restart is needed.
+A: No, skill files are loaded at execution time, so no restart is needed.
 
-**Q: Can I use the same commands across multiple projects?**
+**Q: Can I use the same skills across multiple projects?**
 
 A: Yes, you have these options:
 - **User-level installation**: Automatically available across all projects
 - **Project-level installation**: Copy individually to each project, or manage with symbolic links
 
-**Q: Custom commands don't appear in `/help`**
+**Q: Custom skills don't appear in `/help`**
 
 A: Please check:
-- Files are placed in the correct directory (`.claude/commands/` or `~/.claude/commands/`)
-- File names end with `.md` extension
-- Files contain front matter (section enclosed by `---`)
+- Files are placed in the correct directory (`.claude/skills/<skill-name>/` or `~/.claude/skills/<skill-name>/`)
+- Each skill directory contains a `SKILL.md` file
+- The `SKILL.md` file contains front matter (section enclosed by `---`) with `name` and `description`
 
 **Q: Technical stack is not being recognized correctly**
 
@@ -331,12 +335,12 @@ A:
 - Conduct reviews in multiple sessions for large codebases
 - Without coding standards, reviews focus on Critical/High severity issues only
 
-**Q: Command file updates are not being reflected**
+**Q: Skill file updates are not being reflected**
 
 A:
-- Verify file contents: `cat .claude/commands/review:security.md`
-- Check file timestamp: `ls -l .claude/commands/review:security.md`
-- Restart Claude Code if the issue persists (usually not necessary as commands are loaded at execution time)
+- Verify file contents: `cat .claude/skills/review-security/SKILL.md`
+- Check file timestamp: `ls -l .claude/skills/review-security/SKILL.md`
+- Restart Claude Code if the issue persists (usually not necessary as skills are loaded at execution time)
 - Ensure file is saved correctly with proper encoding (UTF-8)
 
 ### License
