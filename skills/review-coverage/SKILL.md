@@ -1,7 +1,10 @@
 ---
-name: review:coverage
+name: review-coverage
 description: Test coverage review analyzing test quality, coverage gaps, and test effectiveness
-version: 1.1.0
+license: MIT
+metadata:
+  author: IsodaZen
+  version: "1.1.0"
 ---
 
 # Test Coverage Review
@@ -28,7 +31,7 @@ Evaluate test code and coverage to ensure:
 - Test reliability and determinism
 
 ## Prerequisites
-- This command is designed for use with Claude Code
+- Designed for use with Claude Code
 - Examine the workspace to understand the codebase structure and technology stack
 - **Request output format preference from user**: Ask whether to output review results to console or save to a file
   - Console output: Display results directly in the conversation

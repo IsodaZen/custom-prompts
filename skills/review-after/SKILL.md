@@ -1,7 +1,10 @@
 ---
-name: review:after
+name: review-after
 description: Post-implementation review for evaluating completed changes, ensuring quality standards, and assessing deployment readiness
-version: 1.0.0
+license: MIT
+metadata:
+  author: IsodaZen
+  version: "1.0.0"
 ---
 
 # Post-Implementation Review
@@ -27,7 +30,7 @@ Evaluate implemented changes to ensure they:
 - Are ready for safe deployment
 
 ## Prerequisites
-- This command is designed for use with Claude Code
+- Designed for use with Claude Code
 - Examine the workspace to understand the codebase structure and recent changes
 - **Request output format from user**: Ask whether to output the review report to console or save as a markdown file
   - Console output: Display the review results directly in the chat
@@ -155,8 +158,8 @@ Deployment-related recommendations:
 
 ### 追加レビューの推奨 (Additional Review Recommendations)
 Based on the nature of changes, suggest specialized reviews if needed:
-- **セキュリティレビューが推奨される場合**: If changes involve authentication, authorization, data handling, external inputs, or security-sensitive operations, recommend running `/review:security`
-- **パフォーマンスレビューが推奨される場合**: If changes involve database queries, large data processing, API endpoints, caching mechanisms, or resource-intensive operations, recommend running `/review:perf`
+- **セキュリティレビューが推奨される場合**: If changes involve authentication, authorization, data handling, external inputs, or security-sensitive operations, recommend using the `review-security` skill
+- **パフォーマンスレビューが推奨される場合**: If changes involve database queries, large data processing, API endpoints, caching mechanisms, or resource-intensive operations, recommend using the `review-perf` skill
 
 ### 推奨事項 (Recommendations)
 Prioritized improvement suggestions with:
@@ -226,16 +229,16 @@ Highlight well-implemented aspects:
 - Is the change ready for production deployment?
 - What monitoring or observability is needed post-deployment?
 - **Should specialized reviews be recommended?**
-  - Are there security implications requiring `/review:security`?
-  - Are there performance concerns requiring `/review:perf`?
+  - Are there security implications requiring the `review-security` skill?
+  - Are there performance concerns requiring the `review-perf` skill?
 
 ## Workflow Integration
 After completing the review:
 1. Summarize deployment readiness status (Ready / Needs Work / Blocked)
 2. Provide a prioritized action list if issues were found
 3. **Recommend specialized reviews based on change characteristics**:
-   - Suggest `/review:security` if security-sensitive changes detected
-   - Suggest `/review:perf` if performance-critical changes detected
+   - Suggest the `review-security` skill if security-sensitive changes detected
+   - Suggest the `review-perf` skill if performance-critical changes detected
 4. Suggest follow-up items for future improvements
 5. Recommend any other additional reviews needed
 

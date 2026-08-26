@@ -1,7 +1,10 @@
 ---
-name: review:note
+name: review-note
 description: Technical documentation and article review focusing on consistency, clarity, and readability
-version: 1.0.0
+license: MIT
+metadata:
+  author: IsodaZen
+  version: "1.0.0"
 ---
 
 # Technical Documentation and Article Quality Review
@@ -27,7 +30,7 @@ Evaluate documentation to ensure it:
 - Removes AI-generated writing patterns (eliminates redundancy, avoids over-formality)
 
 ## Prerequisites
-- This command is designed for use with Claude Code
+- Designed for use with Claude Code
 - **Document Type Identification**:
   - First, examine the workspace to automatically identify the document type (e.g., README.md, API documentation, blog post)
   - Check file names, directory structure, and content patterns
@@ -169,15 +172,15 @@ Concrete examples showing:
 If during the review you identify content that requires specialized expertise, recommend the following:
 
 - **Security-sensitive content** (authentication, authorization, encryption, data handling):
-  - Recommend `/review:security` for in-depth security analysis
+  - Recommend the `review-security` skill for in-depth security analysis
 
 - **Performance-critical content** (optimization, scalability, resource management):
-  - Recommend `/review:perf` for performance-focused review
+  - Recommend the `review-perf` skill for performance-focused review
 
 - **AI prompt documentation** (LLM prompts, prompt engineering guides):
-  - Recommend `/review:prompt` for prompt quality assessment
+  - Recommend the `review-prompt` skill for prompt quality assessment
 
-Format: "このドキュメントには[セキュリティ/パフォーマンス/プロンプト]に関する重要な内容が含まれています。より詳細なレビューのために `/review:[security|perf|prompt]` の実施をお勧めします。"
+Format: "このドキュメントには[セキュリティ/パフォーマンス/プロンプト]に関する重要な内容が含まれています。より詳細なレビューのために `review-[security|perf|prompt]` スキルの実施をお勧めします。"
 
 ### Additional Considerations
 Notes on SEO, accessibility, or other relevant factors.

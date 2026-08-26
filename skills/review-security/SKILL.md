@@ -1,7 +1,10 @@
 ---
-name: review:security
+name: review-security
 description: Security-focused review identifying vulnerabilities, assessing risk, and ensuring security best practices
-version: 1.0.0
+license: MIT
+metadata:
+  author: IsodaZen
+  version: "1.0.0"
 ---
 
 # Security Review
@@ -28,7 +31,7 @@ Evaluate code and system design to ensure:
 - Compliance with relevant security standards
 
 ## Prerequisites
-- This command is designed for use with Claude Code
+- Designed for use with Claude Code
 - Examine the workspace to understand the codebase structure and technology stack
 - **Request output format preference from user**: Ask whether to output review results to console or save to a file
   - Console output: Display results directly in the conversation

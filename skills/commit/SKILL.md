@@ -1,13 +1,18 @@
 ---
-allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git diff:*)
-description: Create a git commit
+name: commit
+description: Create a clean, conventional-commits-formatted git commit from the current staged and unstaged changes
+license: MIT
+metadata:
+  author: IsodaZen
+  version: "1.0.0"
 ---
 
 ## Context
 
-- Current git status: !`git status`
-- Current git diff (staged and unstaged changes): !`git diff HEAD`
-- Current branch: !`git branch --show-current`
+Before creating the commit, gather the current repository state by running:
+- `git status`
+- `git diff HEAD` (staged and unstaged changes)
+- `git branch --show-current`
 
 ## Your task
 
