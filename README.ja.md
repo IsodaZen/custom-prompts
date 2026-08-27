@@ -51,6 +51,7 @@
 |--------|------|------|
 | `pr-knowledge:init` | `pr-knowledge:collect` が使う `.knowledge/` バンドルの初期化 | ✅ 利用可能 |
 | `pr-knowledge:collect` | マージ済みPRからの知見抽出・蓄積 | ✅ 利用可能 |
+| `pr-knowledge:orchestrate` | 複数日にまたがる知見抽出の並列実行と結果のマージ | ✅ 利用可能 |
 
 ### `review-security`
 
@@ -129,6 +130,16 @@ Conventional Commits形式で、Claude Codeの自動生成フッターなしでG
 
 **補足**: 事前に初期化済みのバンドルが必要です。`.knowledge/config.json` が無い場合は先に `pr-knowledge:init` を実行してください。`.knowledge/` に直接書き込む「ファイル更新モード」と、書き込まずに構造化された結果を返す「返却モード」（オーケストレータ配下のワーカーとして使う場合）の両方をサポートします。
 
+---
+
+### `pr-knowledge:orchestrate`
+
+複数日・期間にまたがる知見抽出を並列化します。対象を日単位に分割し、各日を `pr-knowledge:collect` の返却モードでワーカーとして実行（GitHub APIのレート制限を考慮して3〜5並列・バッチ処理）、その結果を日付の昇順でマージして `.knowledge/` へ1回だけ逐次書き込みます。ワーカーは一切書き込まず、書き込みはオーケストレータに集約することで並行実行時の書き込み衝突を避けます。対象が1日だけに展開される場合は並列化の利益がないため、`pr-knowledge:collect` を直接実行します。
+
+**推奨**: 長期間（例: 1ヶ月分のマージ済みPR）にわたる知見ベースの一括構築、複数の特定日をまとめて処理したい場合
+
+**補足**: 事前に初期化済みのバンドルが必要です。`.knowledge/config.json` が無い場合は先に `pr-knowledge:init` を実行してください。単一日の対象には使いません（`pr-knowledge:collect` を直接呼び出してください）。
+
 ## インストール方法
 
 ### 方法1: プラグインとしてインストール（推奨）
@@ -191,7 +202,9 @@ your-project/
         ├── pr-knowledge/
         │   ├── collect/
         │   │   └── SKILL.md
-        │   └── init/
+        │   ├── init/
+        │   │   └── SKILL.md
+        │   └── orchestrate/
         │       └── SKILL.md
         ├── review-security/
         │   └── SKILL.md
@@ -225,7 +238,9 @@ custom-prompts/
     ├── pr-knowledge/
     │   ├── collect/
     │   │   └── SKILL.md
-    │   └── init/
+    │   ├── init/
+    │   │   └── SKILL.md
+    │   └── orchestrate/
     │       └── SKILL.md
     ├── review-security/
     │   └── SKILL.md
