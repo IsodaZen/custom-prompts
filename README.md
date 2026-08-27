@@ -51,6 +51,7 @@ Skills can be invoked explicitly by name (e.g. `/review-security`) or triggered 
 |-------|---------|--------|
 | `pr-knowledge:init` | Initialize the `.knowledge/` bundle used by `pr-knowledge:collect` | ✅ Available |
 | `pr-knowledge:collect` | Extract and accumulate knowledge from merged PRs | ✅ Available |
+| `pr-knowledge:orchestrate` | Parallelize knowledge extraction across multiple dates and merge the results | ✅ Available |
 
 #### `review-security`
 
@@ -129,6 +130,16 @@ Extracts reusable knowledge from merged PRs — reading both the diff and the re
 
 **Note**: Requires an initialized bundle — run `pr-knowledge:init` first if `.knowledge/config.json` doesn't exist yet. Supports both a file-update mode (writes directly to `.knowledge/`) and a return mode (returns structured findings without writing, for use as a sub-agent worker under an orchestrator).
 
+---
+
+#### `pr-knowledge:orchestrate`
+
+Parallelizes knowledge extraction across multiple dates or a date range: splits the target into per-day batches, runs `pr-knowledge:collect` as a return-mode worker for each day (3–5 concurrent, batched to respect GitHub API rate limits), then merges the results in chronological order and writes to `.knowledge/` in a single, sequential pass. Workers never write — all writes are centralized in the orchestrator to avoid concurrent write conflicts. Falls back to running `pr-knowledge:collect` directly when the target expands to a single day, since parallelization offers no benefit there.
+
+**Best for**: Backfilling a knowledge base over a long history (e.g. a month of merged PRs), batch-processing several specific dates at once.
+
+**Note**: Requires an initialized bundle — run `pr-knowledge:init` first if `.knowledge/config.json` doesn't exist yet. Not for single-day targets — call `pr-knowledge:collect` directly instead.
+
 ### Installation
 
 #### Method 1: Plugin Installation (Recommended)
@@ -191,7 +202,9 @@ your-project/
         ├── pr-knowledge/
         │   ├── collect/
         │   │   └── SKILL.md
-        │   └── init/
+        │   ├── init/
+        │   │   └── SKILL.md
+        │   └── orchestrate/
         │       └── SKILL.md
         ├── review-security/
         │   └── SKILL.md
@@ -225,7 +238,9 @@ custom-prompts/
     ├── pr-knowledge/
     │   ├── collect/
     │   │   └── SKILL.md
-    │   └── init/
+    │   ├── init/
+    │   │   └── SKILL.md
+    │   └── orchestrate/
     │       └── SKILL.md
     ├── review-security/
     │   └── SKILL.md
