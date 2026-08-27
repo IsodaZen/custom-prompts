@@ -49,6 +49,7 @@ Skills can be invoked explicitly by name (e.g. `/review-security`) or triggered 
 
 | Skill | Purpose | Status |
 |-------|---------|--------|
+| `pr-knowledge:init` | Initialize the `.knowledge/` bundle used by `pr-knowledge:collect` | ✅ Available |
 | `pr-knowledge:collect` | Extract and accumulate knowledge from merged PRs | ✅ Available |
 
 #### `review-security`
@@ -112,13 +113,21 @@ Creates git commits using Conventional Commits format without Claude Code's auto
 
 ---
 
+#### `pr-knowledge:init`
+
+Initializes the `.knowledge/` bundle that `pr-knowledge:collect` reads and writes: interviews you for base branches, timezone, the set of knowledge `type`s, description language, and author/label exclusions, then generates `.knowledge/config.json`, the per-type directories, `index.md`, and a frontmatter template (`_template.md`). Writes configuration and scaffolding only — never sample or placeholder knowledge entries. Safe to re-run: an existing `config.json` is shown back to you and only changed on explicit instruction, never silently overwritten.
+
+**Best for**: First-time setup of a repository's knowledge bundle, or revisiting base branches/timezone/types after the project's workflow changes.
+
+---
+
 #### `pr-knowledge:collect`
 
 Extracts reusable knowledge from merged PRs — reading both the diff and the review discussion — and accumulates it as OKF-style (simplified) Markdown under `.knowledge/`. Captures feature behavior, domain knowledge, architecture decisions, dev tips, and code conventions, deduplicating against existing entries. Invoke with a date, date range, or PR numbers (e.g. "record knowledge from the PRs merged on 2026-08-25").
 
 **Best for**: Building a searchable knowledge base from PR history, capturing design rationale that only exists in review threads, onboarding docs that stay current with actual team decisions.
 
-**Note**: Supports both a file-update mode (writes directly to `.knowledge/`) and a return mode (returns structured findings without writing, for use as a sub-agent worker under an orchestrator).
+**Note**: Requires an initialized bundle — run `pr-knowledge:init` first if `.knowledge/config.json` doesn't exist yet. Supports both a file-update mode (writes directly to `.knowledge/`) and a return mode (returns structured findings without writing, for use as a sub-agent worker under an orchestrator).
 
 ### Installation
 
@@ -180,7 +189,9 @@ your-project/
         ├── commit/
         │   └── SKILL.md
         ├── pr-knowledge/
-        │   └── collect/
+        │   ├── collect/
+        │   │   └── SKILL.md
+        │   └── init/
         │       └── SKILL.md
         ├── review-security/
         │   └── SKILL.md
@@ -212,7 +223,9 @@ custom-prompts/
     ├── commit/
     │   └── SKILL.md
     ├── pr-knowledge/
-    │   └── collect/
+    │   ├── collect/
+    │   │   └── SKILL.md
+    │   └── init/
     │       └── SKILL.md
     ├── review-security/
     │   └── SKILL.md

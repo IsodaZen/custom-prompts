@@ -23,6 +23,7 @@
   "skills": [
     "./skills/commit",
     "./skills/pr-knowledge/collect",
+    "./skills/pr-knowledge/init",
     "./skills/review-after",
     "./skills/review-coverage",
     "./skills/review-note",

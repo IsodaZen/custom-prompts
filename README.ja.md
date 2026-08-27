@@ -49,6 +49,7 @@
 
 | スキル | 用途 | 状態 |
 |--------|------|------|
+| `pr-knowledge:init` | `pr-knowledge:collect` が使う `.knowledge/` バンドルの初期化 | ✅ 利用可能 |
 | `pr-knowledge:collect` | マージ済みPRからの知見抽出・蓄積 | ✅ 利用可能 |
 
 ### `review-security`
@@ -112,13 +113,21 @@ Conventional Commits形式で、Claude Codeの自動生成フッターなしでG
 
 ---
 
+### `pr-knowledge:init`
+
+`pr-knowledge:collect` が読み書きする `.knowledge/` バンドルを初期化します。ベースブランチ、タイムゾーン、知見の `type` 一覧、記述言語、除外する作成者・ラベルをヒアリングし、`.knowledge/config.json`、type別ディレクトリ、`index.md`、フロントマター雛形（`_template.md`）を生成します。生成するのは設定と器のみで、サンプルやダミーの知見は一切書きません。再実行しても安全で、既存の `config.json` がある場合は内容を提示したうえで、明示的な指示があった項目だけを更新します（無確認での上書きはしません）。
+
+**推奨**: リポジトリの知見バンドルの初回セットアップ、ベースブランチ・タイムゾーン・typeをプロジェクトの運用変更に合わせて見直すとき
+
+---
+
 ### `pr-knowledge:collect`
 
 マージ済みPRから、差分だけでなく**レビューでの議論**も読み取り、再利用可能な知見をOKF形式（簡易版）のMarkdownとして `.knowledge/` に蓄積します。機能の振る舞い、ドメイン知識、アーキテクチャの設計判断、開発Tips、コード規約を抽出し、既存の記述と突き合わせて重複を避けます。日付・期間・PR番号を指定して呼び出します（例:「2026-08-25にマージされたPRから知見を記録して」）。
 
 **推奨**: PR履歴からの知見ベース構築、レビューでしか残らない設計判断の記録、実態に即したオンボーディング資料の維持
 
-**補足**: `.knowledge/` に直接書き込む「ファイル更新モード」と、書き込まずに構造化された結果を返す「返却モード」（オーケストレータ配下のワーカーとして使う場合）の両方をサポートします。
+**補足**: 事前に初期化済みのバンドルが必要です。`.knowledge/config.json` が無い場合は先に `pr-knowledge:init` を実行してください。`.knowledge/` に直接書き込む「ファイル更新モード」と、書き込まずに構造化された結果を返す「返却モード」（オーケストレータ配下のワーカーとして使う場合）の両方をサポートします。
 
 ## インストール方法
 
@@ -180,7 +189,9 @@ your-project/
         ├── commit/
         │   └── SKILL.md
         ├── pr-knowledge/
-        │   └── collect/
+        │   ├── collect/
+        │   │   └── SKILL.md
+        │   └── init/
         │       └── SKILL.md
         ├── review-security/
         │   └── SKILL.md
@@ -212,7 +223,9 @@ custom-prompts/
     ├── commit/
     │   └── SKILL.md
     ├── pr-knowledge/
-    │   └── collect/
+    │   ├── collect/
+    │   │   └── SKILL.md
+    │   └── init/
     │       └── SKILL.md
     ├── review-security/
     │   └── SKILL.md
